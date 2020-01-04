@@ -1,25 +1,22 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
 using DataMigrationApi.Core.Entities.SQL_Entities;
 using System;
-using System.Linq;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 
 namespace DataMigrationApi.DAL.Repositories
 {
-    public class SqlServerRepository : ISqlServerRepository
+    public class SqlServerUserRepository : ISqlServerUserRepository
     {
         private readonly UserContext _userContext;
 
-        public SqlServerRepository(UserContext userContext)
+        public SqlServerUserRepository(UserContext userContext)
         {
             _userContext = userContext;
         }
 
-        public IQueryable<User> GetAll() =>
+        public IEnumerable<User> GetAll() =>
             _userContext.Users;
 
-        public IQueryable<User> GetAll(Expression<Func<User, bool>> predicate) =>
-            _userContext.Users.Where(predicate);
 
         public User GetById(string id) =>
             _userContext.Users.Find(id);
@@ -33,7 +30,7 @@ namespace DataMigrationApi.DAL.Repositories
 
         public User Update(User entity)
         {
-            var user = _userContext.Users.Find(entity.ID);
+            var user = GetById(entity.ID);
             if (user == null)
             {
                 return null;
@@ -45,7 +42,7 @@ namespace DataMigrationApi.DAL.Repositories
 
         public void Delete(string id)
         {
-            var user = _userContext.Users.Find(id);
+            var user = GetById(id);
             if (user == null)
             {
                 return;

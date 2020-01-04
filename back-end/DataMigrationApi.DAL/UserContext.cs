@@ -19,6 +19,10 @@ namespace DataMigrationApi.DAL
         {
             builder.Entity<User>(user =>
             {
+                user.HasIndex(u => u.Identity)
+                    .IsUnique()
+                    .IsClustered();
+
                 user.Property(u => u.FirstName)
                     .IsRequired()
                     .HasMaxLength(50);

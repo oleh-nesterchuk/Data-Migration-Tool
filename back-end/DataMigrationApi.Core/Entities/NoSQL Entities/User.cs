@@ -9,6 +9,7 @@ namespace DataMigrationApi.Core.Entities.NoSQL_Entities
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string ID { get; set; }
+        public int Identity { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTimeOffset BirthDate { get; set; }

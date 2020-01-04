@@ -2,8 +2,7 @@
 
 namespace DataMigrationApi.Core.Abstractions.Repositories
 {
-    public interface ISqlServerRepository : IBaseRepository<User, string>
+    public interface ISqlServerUserRepository : IBaseRepository<User, string>
     {
-
     }
 }

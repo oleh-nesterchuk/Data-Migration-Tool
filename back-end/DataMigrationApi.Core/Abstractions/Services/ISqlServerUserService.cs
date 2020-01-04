@@ -2,7 +2,7 @@
 
 namespace DataMigrationApi.Core.Abstractions.Services
 {
-    public interface ISqlServerService : IBaseService<User, string>
+    public interface ISqlServerUserService : IBaseService<User, string>
     {
     }
 }

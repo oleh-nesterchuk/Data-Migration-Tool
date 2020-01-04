@@ -2,7 +2,7 @@
 
 namespace DataMigrationApi.Core.Abstractions.Services
 {
-    public interface IMongoDbService : IBaseService<User, string>
+    public interface IMongoDbUserService : IBaseService<User, string>
     {
     }
 }
