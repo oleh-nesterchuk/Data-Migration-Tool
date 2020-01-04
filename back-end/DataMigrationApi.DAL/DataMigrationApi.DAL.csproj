@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20191213121343_InitialMigration.cs" />
+    <Compile Remove="Migrations\20191213121343_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213123628_InitialMigration.cs" />
+    <Compile Remove="Migrations\20191213123628_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213174536_InitMigration.cs" />
+    <Compile Remove="Migrations\20191213174536_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213175631_InitMigration.cs" />
+    <Compile Remove="Migrations\20191213175631_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213175840_InitMigration.cs" />
+    <Compile Remove="Migrations\20191213175840_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213192827_InitMigration.cs" />
+    <Compile Remove="Migrations\20191213192827_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213193610_InitMigration.cs" />
+    <Compile Remove="Migrations\20191213193610_InitMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="mongocsharpdriver" Version="2.10.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataMigrationApi.Core\DataMigrationApi.Core.csproj" />
+  </ItemGroup>
+
+</Project>
