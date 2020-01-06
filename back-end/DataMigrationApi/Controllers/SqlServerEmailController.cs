@@ -23,7 +23,7 @@ namespace DataMigrationApi.Controllers
             var emails = _emailService.GetAllUserEmails(id);
             if (emails == null)
             {
-                return null;
+                return NotFound();
             }
 
             return emails.ToList();

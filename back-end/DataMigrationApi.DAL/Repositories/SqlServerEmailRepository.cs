@@ -1,10 +1,8 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
 using DataMigrationApi.Core.Entities.SQL_Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DataMigrationApi.DAL.Repositories
 {
@@ -51,8 +49,9 @@ namespace DataMigrationApi.DAL.Repositories
                 return null;
             }
 
+            entity.UserID = email.UserID;
             _userContext.Entry(email).CurrentValues.SetValues(entity);
-            return entity;
+            return email;
         }
 
         public void Delete(int id)

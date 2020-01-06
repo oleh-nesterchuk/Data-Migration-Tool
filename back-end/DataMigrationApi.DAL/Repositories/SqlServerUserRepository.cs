@@ -2,7 +2,6 @@
 using DataMigrationApi.Core.Entities.SQL_Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DataMigrationApi.DAL.Repositories
 {
@@ -37,6 +36,7 @@ namespace DataMigrationApi.DAL.Repositories
                 return null;
             }
 
+            entity.Identity = user.Identity;
             _userContext.Entry(user).CurrentValues.SetValues(entity);
             return entity;
         }

@@ -2,7 +2,6 @@
 using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities.SQL_Entities;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DataMigrationApi.Services
 {
@@ -20,10 +19,6 @@ namespace DataMigrationApi.Services
         public IEnumerable<Email> GetAllUserEmails(string id)
         {
             var emails = _unitOfWork.SqlServerEmailRepository.GetAllUserEmails(id);
-            if (emails == null)
-            {
-                return null;
-            }
 
             return emails;
         }
