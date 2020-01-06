@@ -1,8 +1,7 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
-using DataMigrationApi.Core.Entities.NoSQL_Entities;
+using DataMigrationApi.Core.Entities;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DataMigrationApi.Services
 {
@@ -17,7 +16,7 @@ namespace DataMigrationApi.Services
 
         public IEnumerable<User> Get() =>
             _unitOfWork.MongoDbRepository.GetAll();
-            
+
         public User Get(string id) =>
             _unitOfWork.MongoDbRepository.GetById(id);
 

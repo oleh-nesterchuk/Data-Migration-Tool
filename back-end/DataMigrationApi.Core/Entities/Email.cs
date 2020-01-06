@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace DataMigrationApi.Core.Entities.SQL_Entities
+namespace DataMigrationApi.Core.Entities
 {
     public class Email : IEntity<int>
     {

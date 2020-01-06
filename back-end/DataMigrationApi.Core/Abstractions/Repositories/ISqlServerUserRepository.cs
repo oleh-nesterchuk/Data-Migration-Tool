@@ -1,4 +1,4 @@
-﻿using DataMigrationApi.Core.Entities.SQL_Entities;
+﻿using DataMigrationApi.Core.Entities;
 
 namespace DataMigrationApi.Core.Abstractions.Repositories
 {

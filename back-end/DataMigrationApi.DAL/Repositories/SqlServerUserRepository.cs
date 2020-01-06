@@ -1,5 +1,5 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
-using DataMigrationApi.Core.Entities.SQL_Entities;
+using DataMigrationApi.Core.Entities;
 using System;
 using System.Collections.Generic;
 
@@ -23,7 +23,11 @@ namespace DataMigrationApi.DAL.Repositories
 
         public User Insert(User entity)
         {
-            entity.ID = Guid.NewGuid().ToString();
+            if (!Guid.TryParse(entity.ID, out _) || GetById(entity.ID) != null)
+            {
+                entity.ID = Guid.NewGuid().ToString();
+            }
+
             _userContext.Users.Add(entity);
             return entity;
         }

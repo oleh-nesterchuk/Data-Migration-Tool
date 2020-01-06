@@ -1,10 +1,11 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
-using DataMigrationApi.Core.Entities.NoSQL_Entities;
+using DataMigrationApi.Core.Entities;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace DataMigrationApi.DAL.Repositories
 {
@@ -12,6 +13,23 @@ namespace DataMigrationApi.DAL.Repositories
     {
         private readonly IMongoCollection<User> _users;
         private readonly ProjectionDefinition<User> _projection;
+
+        static MongoDbUserRepository()
+        {
+            BsonClassMap.RegisterClassMap<User>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdProperty(u => u.ID).SetIdGenerator(StringObjectIdGenerator.Instance);
+            });
+
+            BsonClassMap.RegisterClassMap<Email>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapIdProperty(e => e.ID).SetIdGenerator(StringObjectIdGenerator.Instance);
+                cm.UnmapMember(e => e.User);
+                cm.UnmapMember(e => e.UserID);
+            });
+        }
 
         public MongoDbUserRepository(string connection)
         {
@@ -30,15 +48,18 @@ namespace DataMigrationApi.DAL.Repositories
         public IEnumerable<User> GetAll() =>
             _users.Find(x => true).Project<User>(_projection).ToEnumerable();
 
-        public IEnumerable<User> GetAll(Expression<Func<User, bool>> predicate) =>
-            _users.Find(predicate).Project<User>(_projection).ToEnumerable();
+        public IEnumerable<User> GetAllWithoutProjection() =>
+            _users.Find(x => true).ToEnumerable();
 
         public User GetById(string id) =>
             _users.Find(u => u.ID == id).FirstOrDefault();
 
         public User Insert(User entity)
         {
-            entity.ID = Guid.NewGuid().ToString();
+            if (!Guid.TryParse(entity.ID, out _) || GetById(entity.ID) != null)
+            {
+                entity.ID = Guid.NewGuid().ToString();
+            }
             entity.Identity = FindMaxUserIdentity() + 1;
             for (int i = 0; i < entity.Emails.Count; ++i)
             {
@@ -132,8 +153,8 @@ namespace DataMigrationApi.DAL.Repositories
             {
                 return 0;
             }
-            var user = _users.Find(u => true).SortBy(u => u.Identity).Limit(1).First();
-            return user.Identity;
+            var max = _users.AsQueryable().Max(u => u.Identity);
+            return max;
         }
 
         private int FindMaxEmailIdentity()

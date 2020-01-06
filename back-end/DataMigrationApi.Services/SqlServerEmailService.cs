@@ -1,6 +1,6 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
-using DataMigrationApi.Core.Entities.SQL_Entities;
+using DataMigrationApi.Core.Entities;
 using System.Collections.Generic;
 
 namespace DataMigrationApi.Services

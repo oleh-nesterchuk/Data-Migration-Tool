@@ -1,8 +1,7 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
-using DataMigrationApi.Core.Entities.SQL_Entities;
+using DataMigrationApi.Core.Entities;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DataMigrationApi.Services
 {
@@ -29,6 +28,7 @@ namespace DataMigrationApi.Services
 
         public User Insert(User user)
         {
+            //user.Identity = 0;
             _unitOfWork.SqlServerUserRepository.Insert(user);
             _unitOfWork.Save();
             return user;

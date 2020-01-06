@@ -1,5 +1,5 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
-using DataMigrationApi.Core.Entities.SQL_Entities;
+using DataMigrationApi.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

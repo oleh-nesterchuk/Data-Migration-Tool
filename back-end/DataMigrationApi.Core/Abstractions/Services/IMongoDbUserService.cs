@@ -1,4 +1,4 @@
-﻿using DataMigrationApi.Core.Entities.NoSQL_Entities;
+﻿using DataMigrationApi.Core.Entities;
 
 namespace DataMigrationApi.Core.Abstractions.Services
 {

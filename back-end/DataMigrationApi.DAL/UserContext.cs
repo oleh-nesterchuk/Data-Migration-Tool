@@ -1,4 +1,4 @@
-﻿using DataMigrationApi.Core.Entities.SQL_Entities;
+﻿using DataMigrationApi.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataMigrationApi.DAL

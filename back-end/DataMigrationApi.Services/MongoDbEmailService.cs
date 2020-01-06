@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using DataMigrationApi.Core.Abstractions;
+﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
-using DataMigrationApi.Core.Entities.NoSQL_Entities;
+using DataMigrationApi.Core.Entities;
+using System.Collections.Generic;
 
 namespace DataMigrationApi.Services
 {
