@@ -14,11 +14,19 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<Email> Get() =>
-            _unitOfWork.SqlServerEmailRepository.GetAll().ToList();
+        public IEnumerable<Email> Get() =>
+            _unitOfWork.SqlServerEmailRepository.GetAll();
 
-        public List<Email> GetAllUserEmails(string id) =>
-            _unitOfWork.SqlServerEmailRepository.GetAllUserEmails(id).ToList();
+        public IEnumerable<Email> GetAllUserEmails(string id)
+        {
+            var emails = _unitOfWork.SqlServerEmailRepository.GetAllUserEmails(id);
+            if (emails == null)
+            {
+                return null;
+            }
+
+            return emails;
+        }
 
         public Email Get(int id) =>
             _unitOfWork.SqlServerEmailRepository.GetById(id);
@@ -26,18 +34,21 @@ namespace DataMigrationApi.Services
         public Email Insert(Email entity)
         {
             var inserted = _unitOfWork.SqlServerEmailRepository.Insert(entity);
+            _unitOfWork.Save();
             return inserted;
         }
 
         public Email Update(Email entity)
         {
             var updated = _unitOfWork.SqlServerEmailRepository.Update(entity);
+            _unitOfWork.Save();
             return updated;
         }
 
         public void Delete(int id)
         {
             _unitOfWork.SqlServerEmailRepository.Delete(id);
+            _unitOfWork.Save();
         }
     }
 }

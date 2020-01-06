@@ -15,11 +15,11 @@ namespace DataMigrationApi.DAL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DataMigrationApi.Core.SQL_Entities.Email", b =>
+            modelBuilder.Entity("DataMigrationApi.Core.Entities.SQL_Entities.Email", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -33,7 +33,7 @@ namespace DataMigrationApi.DAL.Migrations
 
                     b.Property<string>("UserID")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -47,10 +47,11 @@ namespace DataMigrationApi.DAL.Migrations
                     b.ToTable("Emails");
                 });
 
-            modelBuilder.Entity("DataMigrationApi.Core.SQL_Entities.User", b =>
+            modelBuilder.Entity("DataMigrationApi.Core.Entities.SQL_Entities.User", b =>
                 {
                     b.Property<string>("ID")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(36)")
+                        .HasMaxLength(36);
 
                     b.Property<int>("Age")
                         .ValueGeneratedOnAddOrUpdate()
@@ -65,18 +66,30 @@ namespace DataMigrationApi.DAL.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<int>("Identity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.HasKey("ID");
+                    b.HasKey("ID")
+                        .HasAnnotation("SqlServer:Clustered", false);
+
+                    b.HasIndex("Identity")
+                        .IsUnique()
+                        .HasAnnotation("SqlServer:Clustered", true);
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DataMigrationApi.Core.SQL_Entities.Email", b =>
+            modelBuilder.Entity("DataMigrationApi.Core.Entities.SQL_Entities.Email", b =>
                 {
-                    b.HasOne("DataMigrationApi.Core.SQL_Entities.User", "User")
+                    b.HasOne("DataMigrationApi.Core.Entities.SQL_Entities.User", "User")
                         .WithMany("Emails")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)

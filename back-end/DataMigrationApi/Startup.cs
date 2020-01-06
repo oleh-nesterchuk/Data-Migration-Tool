@@ -1,4 +1,7 @@
+using DataMigrationApi.Core.Abstractions;
+using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.DAL;
+using DataMigrationApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +25,21 @@ namespace DataMigrationApi
         {
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
-
+            
             services.AddControllers();
 
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<ISqlServerEmailService, SqlServerEmailService>();
+            services.AddTransient<ISqlServerUserService, SqlServerUserService>();
+            services.AddTransient<IMongoDbEmailService, MongoDbEmailService>();
+            services.AddTransient<IMongoDbUserService, MongoDbUserService>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Data Migration tool", Version = "v1.0" });
+                c.CustomSchemaIds(x => x.FullName);
             });
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

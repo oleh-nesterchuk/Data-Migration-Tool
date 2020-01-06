@@ -23,6 +23,15 @@ namespace DataMigrationApi.DAL
                     .IsUnique()
                     .IsClustered();
 
+                user.HasKey(u => u.ID)
+                    .IsClustered(false);
+                
+                user.Property(u => u.ID)
+                    .HasMaxLength(36);
+
+                user.Property(u => u.Identity)
+                    .UseIdentityColumn();
+
                 user.Property(u => u.FirstName)
                     .IsRequired()
                     .HasMaxLength(50);

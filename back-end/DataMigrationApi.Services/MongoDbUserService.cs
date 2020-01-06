@@ -15,8 +15,8 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<User> Get() =>
-            _unitOfWork.MongoDbRepository.GetAll().ToList();
+        public IEnumerable<User> Get() =>
+            _unitOfWork.MongoDbRepository.GetAll();
             
         public User Get(string id) =>
             _unitOfWork.MongoDbRepository.GetById(id);

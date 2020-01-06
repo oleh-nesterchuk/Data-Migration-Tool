@@ -2,6 +2,7 @@
 using DataMigrationApi.Core.Entities.SQL_Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataMigrationApi.DAL.Repositories
 {
@@ -23,7 +24,7 @@ namespace DataMigrationApi.DAL.Repositories
 
         public User Insert(User entity)
         {
-            entity.ID = new Guid().ToString();
+            entity.ID = Guid.NewGuid().ToString();
             _userContext.Users.Add(entity);
             return entity;
         }

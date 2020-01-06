@@ -8,8 +8,8 @@ namespace DataMigrationApi.Core.Abstractions.Repositories
         IEnumerable<Email> GetEmails();
         IEnumerable<Email> GetAllUserEmails(string id);
         Email GetEmailById(int id);
-        Email InsertEmail(Email email);
-        Email UpdateEmail(Email email);
+        Email InsertEmail(Email email, string userId);
+        Email UpdateEmail(Email email, string userId);
         void DeleteEmail(int id);
     }
 }

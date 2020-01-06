@@ -15,24 +15,24 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<Email> Get() =>
-            _unitOfWork.MongoDbRepository.GetEmails().ToList();
+        public IEnumerable<Email> Get() =>
+            _unitOfWork.MongoDbRepository.GetEmails();
 
-        public List<Email> GetAllUserEmails(string id) =>
-            _unitOfWork.MongoDbRepository.GetAllUserEmails(id).ToList();
+        public IEnumerable<Email> GetAllUserEmails(string id) =>
+            _unitOfWork.MongoDbRepository.GetAllUserEmails(id);
 
         public Email Get(int id) =>
             _unitOfWork.MongoDbRepository.GetEmailById(id);
 
-        public Email Insert(Email entity)
+        public Email Insert(Email entity, string userId)
         {
-            var inserted = _unitOfWork.MongoDbRepository.InsertEmail(entity);
+            var inserted = _unitOfWork.MongoDbRepository.InsertEmail(entity, userId);
             return inserted;
         }
 
-        public Email Update(Email entity)
+        public Email Update(Email entity, string userId)
         {
-            var updated = _unitOfWork.MongoDbRepository.UpdateEmail(entity);
+            var updated = _unitOfWork.MongoDbRepository.UpdateEmail(entity, userId);
             return updated;
         }
 

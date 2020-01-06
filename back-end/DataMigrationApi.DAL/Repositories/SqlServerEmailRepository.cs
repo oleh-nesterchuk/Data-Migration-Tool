@@ -1,7 +1,9 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
 using DataMigrationApi.Core.Entities.SQL_Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataMigrationApi.DAL.Repositories
@@ -18,8 +20,19 @@ namespace DataMigrationApi.DAL.Repositories
         public IEnumerable<Email> GetAll() =>
             _userContext.Emails;
 
-        public IEnumerable<Email> GetAllUserEmails(string id) =>
-            _userContext.Users.Find(id).Emails;
+        public IEnumerable<Email> GetAllUserEmails(string id)
+        {
+            var user = _userContext.Users
+                .Include(u => u.Emails)
+                .ToList()
+                .Find(u => u.ID == id);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return user.Emails;
+        }
 
         public Email GetById(int id) =>
             _userContext.Emails.Find(id);

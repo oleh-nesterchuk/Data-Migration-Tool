@@ -1,0 +1,62 @@
+﻿using DataMigrationApi.Core.Abstractions.Services;
+using DataMigrationApi.Core.Entities.NoSQL_Entities;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DataMigrationApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class MongoDbUserController : ControllerBase
+    {
+        private readonly IMongoDbUserService _userService;
+
+        public MongoDbUserController(IMongoDbUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<User>> Get() =>
+            _userService.Get().ToList();
+
+        [HttpGet("{id}")]
+        public ActionResult<User> Get(string id)
+        {
+            var user = _userService.Get(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
+
+        [HttpPost]
+        public ActionResult<User> Post([FromBody] User user)
+        {
+            var inserted = _userService.Insert(user);
+            return inserted;
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<User> Put([FromBody] User user)
+        {
+            var updated = _userService.Update(user);
+            if (updated == null)
+            {
+                return NotFound();
+            }
+
+            return updated;
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(string id)
+        {
+            _userService.Delete(id);
+            return NoContent();
+        }
+    }
+}

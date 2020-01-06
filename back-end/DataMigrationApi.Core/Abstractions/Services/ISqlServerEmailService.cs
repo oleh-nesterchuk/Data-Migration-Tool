@@ -5,6 +5,6 @@ namespace DataMigrationApi.Core.Abstractions.Services
 {
     public interface ISqlServerEmailService : IBaseService<Email, int>
     {
-        List<Email> GetAllUserEmails(string id);
+        IEnumerable<Email> GetAllUserEmails(string id);
     }
 }

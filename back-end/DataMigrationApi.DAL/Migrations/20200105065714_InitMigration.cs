@@ -11,7 +11,9 @@ namespace DataMigrationApi.DAL.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    ID = table.Column<string>(nullable: false),
+                    ID = table.Column<string>(maxLength: 36, nullable: false),
+                    Identity = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
                     BirthDate = table.Column<DateTimeOffset>(nullable: false),
@@ -19,7 +21,8 @@ namespace DataMigrationApi.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.ID);
+                    table.PrimaryKey("PK_Users", x => x.ID)
+                        .Annotation("SqlServer:Clustered", false);
                 });
 
             migrationBuilder.CreateTable(
@@ -47,6 +50,13 @@ namespace DataMigrationApi.DAL.Migrations
                 name: "IX_Emails_UserID",
                 table: "Emails",
                 column: "UserID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Identity",
+                table: "Users",
+                column: "Identity",
+                unique: true)
+                .Annotation("SqlServer:Clustered", true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

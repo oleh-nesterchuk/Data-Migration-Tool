@@ -15,9 +15,9 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public List<User> Get()
+        public IEnumerable<User> Get()
         {
-            var users = _unitOfWork.SqlServerUserRepository.GetAll().ToList();
+            var users = _unitOfWork.SqlServerUserRepository.GetAll();
             return users;
         }
 
@@ -30,18 +30,21 @@ namespace DataMigrationApi.Services
         public User Insert(User user)
         {
             _unitOfWork.SqlServerUserRepository.Insert(user);
+            _unitOfWork.Save();
             return user;
         }
 
         public User Update(User user)
         {
             var userToUpdate = _unitOfWork.SqlServerUserRepository.Update(user);
+            _unitOfWork.Save();
             return userToUpdate;
         }
 
         public void Delete(string id)
         {
             _unitOfWork.SqlServerUserRepository.Delete(id);
+            _unitOfWork.Save();
         }
     }
 }
