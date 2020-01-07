@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -19,16 +19,30 @@
     <Compile Remove="Migrations\20191213192827_InitMigration.Designer.cs" />
     <Compile Remove="Migrations\20191213193610_InitMigration.cs" />
     <Compile Remove="Migrations\20191213193610_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191213194157_InitMigration.cs" />
+    <Compile Remove="Migrations\20191213194157_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200104205540_added-identity.cs" />
+    <Compile Remove="Migrations\20200104205540_added-identity.Designer.cs" />
+    <Compile Remove="Migrations\20200104205927_InitMigration.cs" />
+    <Compile Remove="Migrations\20200104205927_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200104211027_InitMigration.cs" />
+    <Compile Remove="Migrations\20200104211027_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200105064033_InitMigration.cs" />
+    <Compile Remove="Migrations\20200105064033_InitMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200105065426_IdentityFixed.cs" />
+    <Compile Remove="Migrations\20200105065426_IdentityFixed.Designer.cs" />
+    <Compile Remove="Migrations\20200106121455_IdentityUpdate.cs" />
+    <Compile Remove="Migrations\20200106121455_IdentityUpdate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

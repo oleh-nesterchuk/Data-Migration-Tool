@@ -1,4 +1,4 @@
-﻿using DataMigrationApi.Core.Entities.SQL_Entities;
+﻿using DataMigrationApi.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataMigrationApi.DAL
@@ -11,7 +11,7 @@ namespace DataMigrationApi.DAL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-53USJLL;Initial Catalog=User;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=User;Integrated Security=True");
             }
         }
 
@@ -19,6 +19,21 @@ namespace DataMigrationApi.DAL
         {
             builder.Entity<User>(user =>
             {
+                user.HasIndex(u => u.Identity)
+                    .IsUnique()
+                    .IsClustered();
+
+                user.HasKey(u => u.ID)
+                    .IsClustered(false);
+                
+                user.Property(u => u.ID)
+                    .HasMaxLength(36);
+
+                user.Property(u => u.Identity)
+                    .UseIdentityColumn();
+
+                user.HasAlternateKey(u => u.Identity);
+
                 user.Property(u => u.FirstName)
                     .IsRequired()
                     .HasMaxLength(50);

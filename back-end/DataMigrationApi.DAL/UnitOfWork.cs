@@ -7,23 +7,27 @@ namespace DataMigrationApi.DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private ISqlServerRepository _sqlServerRepository;
-        private IMongoDbRepository _mongoDbRepository;
+        private ISqlServerEmailRepository _sqlServerEmailRepository;
+        private ISqlServerUserRepository _sqlServerUserRepository;
+        private IMongoDbUserRepository _mongoDbRepository;
         private UserContext _userContext;
         private readonly string _mongoConnectionString;
         private bool _disposed = false;
 
-        public UnitOfWork(UserContext userContext, string mongoConnectionString)
+        public UnitOfWork(UserContext userContext, string mongoConnectionString = "mongodb://localhost:27017")
         {
             _userContext = userContext;
             _mongoConnectionString = mongoConnectionString;
         }
 
-        public ISqlServerRepository SqlServerRepository => _sqlServerRepository ??=
-            new SqlServerRepository(_userContext);
+        public ISqlServerEmailRepository SqlServerEmailRepository => _sqlServerEmailRepository ??=
+            new SqlServerEmailRepository(_userContext);
 
-        public IMongoDbRepository MongoDbRepository => _mongoDbRepository ??=
-            new MongoDbRepository(_mongoConnectionString);
+        public ISqlServerUserRepository SqlServerUserRepository => _sqlServerUserRepository ??=
+            new SqlServerUserRepository(_userContext);
+
+        public IMongoDbUserRepository MongoDbRepository => _mongoDbRepository ??=
+            new MongoDbUserRepository(_mongoConnectionString);
 
         public void Save()
         {

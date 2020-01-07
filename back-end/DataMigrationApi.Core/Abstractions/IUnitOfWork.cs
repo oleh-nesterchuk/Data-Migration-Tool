@@ -5,8 +5,9 @@ namespace DataMigrationApi.Core.Abstractions
 {
     public interface IUnitOfWork : IDisposable
     {
-        ISqlServerRepository SqlServerRepository { get; }
-        IMongoDbRepository MongoDbRepository { get; }
+        ISqlServerUserRepository SqlServerUserRepository { get; }
+        ISqlServerEmailRepository SqlServerEmailRepository { get; }
+        IMongoDbUserRepository MongoDbRepository { get; }
         void Save();
     }
 }

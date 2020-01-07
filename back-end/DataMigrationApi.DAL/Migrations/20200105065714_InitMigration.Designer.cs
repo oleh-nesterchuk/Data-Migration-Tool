@@ -4,14 +4,16 @@ using DataMigrationApi.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataMigrationApi.DAL.Migrations
 {
     [DbContext(typeof(UserContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20200105065714_InitMigration")]
+    partial class InitMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace DataMigrationApi.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DataMigrationApi.Core.Entities.Email", b =>
+            modelBuilder.Entity("DataMigrationApi.Core.Entities.SQL_Entities.Email", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -47,7 +49,7 @@ namespace DataMigrationApi.DAL.Migrations
                     b.ToTable("Emails");
                 });
 
-            modelBuilder.Entity("DataMigrationApi.Core.Entities.User", b =>
+            modelBuilder.Entity("DataMigrationApi.Core.Entities.SQL_Entities.User", b =>
                 {
                     b.Property<string>("ID")
                         .HasColumnType("nvarchar(36)")
@@ -80,8 +82,6 @@ namespace DataMigrationApi.DAL.Migrations
                     b.HasKey("ID")
                         .HasAnnotation("SqlServer:Clustered", false);
 
-                    b.HasAlternateKey("Identity");
-
                     b.HasIndex("Identity")
                         .IsUnique()
                         .HasAnnotation("SqlServer:Clustered", true);
@@ -89,9 +89,9 @@ namespace DataMigrationApi.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DataMigrationApi.Core.Entities.Email", b =>
+            modelBuilder.Entity("DataMigrationApi.Core.Entities.SQL_Entities.Email", b =>
                 {
-                    b.HasOne("DataMigrationApi.Core.Entities.User", "User")
+                    b.HasOne("DataMigrationApi.Core.Entities.SQL_Entities.User", "User")
                         .WithMany("Emails")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
