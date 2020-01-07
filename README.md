@@ -13,6 +13,7 @@ Current list of todo:
 Current list of bugs:
 1. TransferToSqlServer returns 500 code (cannot insert explicit value for identity even though it adds new record to a table (wtf?!)).
 2. Drag'n'drop doesn't copy rows but only moves, despite providing 'copy' option with the value of 'true'. (Am i doing somethind wrong?)
+3. MongoDb's Email model contains field UserId, even though it has been unmapped in BsonClassMap.RegisterMapClass() configuration method.
 
 Epilogue.
 Thank you if you've read so far. The given task has been really interesting and enlightening. It's been a pleasure working on it, even though I can say without the slightest doubt that I've successfully failed it.
