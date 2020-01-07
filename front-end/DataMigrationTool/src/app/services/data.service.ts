@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user';
+import { Email } from '../interfaces/email';
 
 
 @Injectable({
@@ -8,6 +9,7 @@ import { User } from '../interfaces/user';
 export class DataService {
   sqlUsers: User[];
   mongoUsers: User[];
+  emails: Email[];
 
   constructor() { }
 }

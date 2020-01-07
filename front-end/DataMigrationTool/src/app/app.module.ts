@@ -1,30 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { MatInputModule, MatPaginatorModule, MatTableModule } from '@angular/material';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DragulaModule } from 'ng2-dragula';
 
 import { AppComponent } from './components/app/app.component';
 import { DbTableComponent } from './components/db-table/db-table.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DbTableRowComponent } from './components/db-table-row/db-table-row.component';
 import { DataService } from './services/data.service';
+import { NgbdModalContent } from './components/modal/modal-component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DbTableComponent,
-    DbTableRowComponent
+    NgbdModalContent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    MatInputModule,
-    MatPaginatorModule,
-    MatTableModule,
-    BrowserAnimationsModule
+    NgbModule,
+    DragulaModule.forRoot()
   ],
   providers: [DataService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [NgbdModalContent]
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
 export interface Email {
-  ID: number;
+  id: number;
   value: string;
   isConfirmed: boolean;
 }

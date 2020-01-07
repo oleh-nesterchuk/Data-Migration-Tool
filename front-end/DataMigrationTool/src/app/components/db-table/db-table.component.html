@@ -8,16 +8,18 @@
         </th>
       </tr>
       </thead>
+      <tbody dragula="COPYABLE">
     <tr *ngFor="let user of data[tableName]; let i = index">
       <th scope="row">{{user.id | slice:-4}}</th>
       <td>{{user.firstName | titlecase}}</td>
       <td>{{user.lastName | titlecase}}</td>
       <td>{{user.birthDate | date}}</td>
       <td>{{user.age}}</td>
-      <td>{{user.emails}}</td>
+      <td><a (click)="loadEmails(i)">Show</a></td>
       <td>
         <button class="btn btn-primary" (click)="transfer(i)">Transfer</button>
       </td>
     </tr>
+    </tbody>
   </table>
 </div>
