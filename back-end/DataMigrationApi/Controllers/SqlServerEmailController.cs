@@ -46,6 +46,10 @@ namespace DataMigrationApi.Controllers
         [HttpPost]
         public ActionResult<Email> Post([FromBody] Email email)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Email is not valid!");
+            }
             var inserted = _emailService.Insert(email);
             return inserted;
         }
@@ -53,6 +57,10 @@ namespace DataMigrationApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<Email> Put([FromBody] Email email)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Email is not valid!");
+            }
             var updated = _emailService.Update(email);
             if (updated == null)
             {

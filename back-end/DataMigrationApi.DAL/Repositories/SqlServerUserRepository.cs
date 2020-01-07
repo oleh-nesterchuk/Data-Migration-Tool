@@ -17,7 +17,6 @@ namespace DataMigrationApi.DAL.Repositories
         public IEnumerable<User> GetAll() =>
             _userContext.Users;
 
-
         public User GetById(string id) =>
             _userContext.Users.Find(id);
 

@@ -28,7 +28,6 @@ namespace DataMigrationApi.Services
 
         public User Insert(User user)
         {
-            //user.Identity = 0;
             _unitOfWork.SqlServerUserRepository.Insert(user);
             _unitOfWork.Save();
             return user;

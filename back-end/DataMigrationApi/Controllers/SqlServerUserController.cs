@@ -38,6 +38,10 @@ namespace DataMigrationApi.Controllers
         [HttpPost]
         public ActionResult<User> Post([FromBody] User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("User is not valid!");
+            }
             var inserted = _userService.Insert(user);
             return inserted;
         }
@@ -45,6 +49,10 @@ namespace DataMigrationApi.Controllers
         [HttpPut("{id}")]
         public ActionResult<User> Put([FromBody] User user)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("User is not valid!");
+            }
             var updated = _userService.Update(user);
             if (updated == null)
             {

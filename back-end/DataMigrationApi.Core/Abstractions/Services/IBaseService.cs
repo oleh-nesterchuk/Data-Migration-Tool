@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DataMigrationApi.Core.Abstractions.Services
 {
-    public interface IBaseService<TEntity, T> where TEntity : class 
+    public interface IBaseService<TEntity, T> where TEntity : class
     {
         IEnumerable<TEntity> Get();
         TEntity Get(T id);
