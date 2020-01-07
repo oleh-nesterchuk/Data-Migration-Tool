@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm">
+      <app-db-table [tableHeader]="'SQL Server'" [tableName]="'sqlUsers'" [queryParams]="'SqlServerUser'">
+      </app-db-table>
+    </div>
+    <div class="col-sm">
+      <app-db-table [tableHeader]="'MongoDb'" [tableName]="'mongoUsers'" [queryParams]="'MongoDbUser'">
+      </app-db-table>
+    </div>
+  </div>
+</div>

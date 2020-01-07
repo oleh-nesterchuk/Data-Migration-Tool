@@ -1,9 +1,12 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
+using DataMigrationApi.Core.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
 namespace DataMigrationApi.Controllers
 {
+    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SendToMongoDbController : ControllerBase
@@ -22,7 +25,7 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Transfer(string id)
+        public ActionResult<User> Transfer(string id)
         {
             if (_mongoService.Get(id) != null)
             {
@@ -30,8 +33,7 @@ namespace DataMigrationApi.Controllers
             }
             var user = _sqlUserService.Get(id);
             user.Emails = _sqlEmailService.GetAllUserEmails(id).ToList();
-            _mongoService.Insert(user);
-            return Ok();
+            return _mongoService.Insert(user);
         }
     }
 }

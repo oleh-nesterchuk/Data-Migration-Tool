@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataMigrationApi.Core.Abstractions.Services;
-using Microsoft.AspNetCore.Http;
+﻿using DataMigrationApi.Core.Abstractions.Services;
+using DataMigrationApi.Core.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DataMigrationApi.Controllers
 {
+    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SendToSqlServerController : ControllerBase
@@ -26,7 +24,7 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Transfer(string id)
+        public ActionResult<User> Transfer(string id)
         {
             if (_sqlUserService.Get(id) != null)
             {
@@ -37,13 +35,13 @@ namespace DataMigrationApi.Controllers
             user.Emails = null;
             user.Identity = 0;
 
-            _sqlUserService.Insert(user);
+            var inserted = _sqlUserService.Insert(user);
             foreach (var e in emails)
             {
                 _sqlEmailService.Insert(e);
             }
 
-            return Ok();
+            return inserted;
         }
     }
 }

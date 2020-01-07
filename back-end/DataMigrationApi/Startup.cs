@@ -25,7 +25,7 @@ namespace DataMigrationApi
         {
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
-            
+                        
             services.AddControllers();
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
@@ -40,6 +40,7 @@ namespace DataMigrationApi
                 c.CustomSchemaIds(x => x.FullName);
             });
 
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -48,6 +49,8 @@ namespace DataMigrationApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x => x.AllowAnyOrigin());
 
             app.UseSwagger();
 

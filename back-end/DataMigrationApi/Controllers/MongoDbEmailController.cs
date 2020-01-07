@@ -1,11 +1,13 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataMigrationApi.Controllers
 {
+    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MongoDbEmailController : ControllerBase

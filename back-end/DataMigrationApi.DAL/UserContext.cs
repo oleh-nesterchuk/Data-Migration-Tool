@@ -32,6 +32,8 @@ namespace DataMigrationApi.DAL
                 user.Property(u => u.Identity)
                     .UseIdentityColumn();
 
+                user.HasAlternateKey(u => u.Identity);
+
                 user.Property(u => u.FirstName)
                     .IsRequired()
                     .HasMaxLength(50);
