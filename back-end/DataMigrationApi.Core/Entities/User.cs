@@ -9,7 +9,7 @@ namespace DataMigrationApi.Core.Entities
         public int Identity { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTimeOffset BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
         public int Age { get; set; }
 
         public virtual List<Email> Emails { get; set; }

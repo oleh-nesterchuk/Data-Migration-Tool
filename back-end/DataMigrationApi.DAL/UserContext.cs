@@ -11,7 +11,7 @@ namespace DataMigrationApi.DAL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=User;Integrated Security=True");
+                optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=MigrationTool;Integrated Security=True");
             }
         }
 

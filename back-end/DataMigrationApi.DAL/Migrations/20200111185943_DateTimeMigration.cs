@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataMigrationApi.DAL.Migrations
 {
-    public partial class InitMigration : Migration
+    public partial class DateTimeMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,13 +16,14 @@ namespace DataMigrationApi.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     LastName = table.Column<string>(maxLength: 50, nullable: true),
-                    BirthDate = table.Column<DateTimeOffset>(nullable: false),
+                    BirthDate = table.Column<DateTime>(nullable: false),
                     Age = table.Column<int>(nullable: false, computedColumnSql: "DATEDIFF(yy, BirthDate, GETDATE()) - CASE WHEN(MONTH(BirthDate) > MONTH(GETDATE())) OR(MONTH(BirthDate) = MONTH(GETDATE()) AND DAY(BirthDate) > DAY(GETDATE())) THEN 1 ELSE 0 END")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.ID)
                         .Annotation("SqlServer:Clustered", false);
+                    table.UniqueConstraint("AK_Users_Identity", x => x.Identity);
                 });
 
             migrationBuilder.CreateTable(

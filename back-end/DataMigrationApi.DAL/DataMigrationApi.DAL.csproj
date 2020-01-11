@@ -31,8 +31,18 @@
     <Compile Remove="Migrations\20200105064033_InitMigration.Designer.cs" />
     <Compile Remove="Migrations\20200105065426_IdentityFixed.cs" />
     <Compile Remove="Migrations\20200105065426_IdentityFixed.Designer.cs" />
+    <Compile Remove="Migrations\20200105065714_InitMigration.cs" />
+    <Compile Remove="Migrations\20200105065714_InitMigration.Designer.cs" />
     <Compile Remove="Migrations\20200106121455_IdentityUpdate.cs" />
     <Compile Remove="Migrations\20200106121455_IdentityUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20200107134624_AlternateKey.cs" />
+    <Compile Remove="Migrations\20200107134624_AlternateKey.Designer.cs" />
+    <Compile Remove="Migrations\20200111185247_DateTimeMigration.cs" />
+    <Compile Remove="Migrations\20200111185247_DateTimeMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200111185408_DateTimeMigration.cs" />
+    <Compile Remove="Migrations\20200111185408_DateTimeMigration.Designer.cs" />
+    <Compile Remove="Migrations\20200111185646_DateTimeMigration.cs" />
+    <Compile Remove="Migrations\20200111185646_DateTimeMigration.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

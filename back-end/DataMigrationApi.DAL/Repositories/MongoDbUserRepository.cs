@@ -12,7 +12,8 @@ namespace DataMigrationApi.DAL.Repositories
     public class MongoDbUserRepository : IMongoDbUserRepository
     {
         private readonly IMongoCollection<User> _users;
-        private readonly ProjectionDefinition<User> _projection;
+        private readonly ProjectionDefinition<User, User> _emailProjection;
+        private readonly ProjectionDefinition<User, User> _ageProjection;
 
         static MongoDbUserRepository()
         {
@@ -42,14 +43,16 @@ namespace DataMigrationApi.DAL.Repositories
             var indexModel = new CreateIndexModel<User>(userBuilder.Ascending(u => u.Identity));
             _users.Indexes.CreateOne(indexModel);
 
-            _projection = Builders<User>.Projection.Exclude(u => u.Emails);
+            _emailProjection = Builders<User>.Projection.Exclude(u => u.Emails);
+            _ageProjection = Builders<User>.Projection.Expression(u => u.CalculateAge());
         }
 
         public IEnumerable<User> GetAll() =>
-            _users.Find(x => true).Project<User>(_projection).ToEnumerable();
+            _users.Find(FilterDefinition<User>.Empty)
+            .Project(_emailProjection).Project(_ageProjection).Project(_ageProjection).ToEnumerable();
 
         public IEnumerable<User> GetAllWithoutProjection() =>
-            _users.Find(x => true).ToEnumerable();
+            _users.Find(FilterDefinition<User>.Empty).ToEnumerable();
 
         public User GetById(string id) =>
             _users.Find(u => u.ID == id).FirstOrDefault();
@@ -78,11 +81,9 @@ namespace DataMigrationApi.DAL.Repositories
             return entity;
         }
 
-        public void Delete(string id)
-        {
-            var filter = Builders<User>.Filter.Where(u => u.ID == id);
-            _users.DeleteOne(filter);
-        }
+        public void Delete(string id) =>
+            _users.DeleteOne(u => u.ID == id);
+        
 
 
         public IEnumerable<Email> GetEmails()

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataMigrationApi.DAL.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20200107134624_AlternateKey")]
-    partial class AlternateKey
+    [Migration("20200111185943_DateTimeMigration")]
+    partial class DateTimeMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,8 +60,8 @@ namespace DataMigrationApi.DAL.Migrations
                         .HasColumnType("int")
                         .HasComputedColumnSql("DATEDIFF(yy, BirthDate, GETDATE()) - CASE WHEN(MONTH(BirthDate) > MONTH(GETDATE())) OR(MONTH(BirthDate) = MONTH(GETDATE()) AND DAY(BirthDate) > DAY(GETDATE())) THEN 1 ELSE 0 END");
 
-                    b.Property<DateTimeOffset>("BirthDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
