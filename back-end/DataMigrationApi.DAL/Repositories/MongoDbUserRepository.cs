@@ -88,13 +88,9 @@ namespace DataMigrationApi.DAL.Repositories
 
         public IEnumerable<Email> GetEmails()
         {
-            foreach (var user in _users.Find(u => true).ToList())
-            {
-                foreach (var email in user.Emails)
-                {
-                    yield return email;
-                }
-            }
+            var emailProjection = Builders<User>.Projection.Expression<IEnumerable<Email>>(u => u.Emails);
+            return _users.Find(FilterDefinition<User>.Empty).Project(emailProjection)
+                .ToEnumerable().SelectMany(e => e);
         }
 
         public IEnumerable<Email> GetAllUserEmails(string id) =>
