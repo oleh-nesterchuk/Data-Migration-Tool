@@ -38,6 +38,8 @@ namespace DataMigrationApi.Controllers
             var inserted = _sqlUserService.Insert(user);
             foreach (var e in emails)
             {
+                e.ID = 0;
+                e.UserID = inserted.ID;
                 _sqlEmailService.Insert(e);
             }
 
