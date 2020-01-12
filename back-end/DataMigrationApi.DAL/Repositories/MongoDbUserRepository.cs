@@ -32,12 +32,12 @@ namespace DataMigrationApi.DAL.Repositories
             });
         }
 
-        public MongoDbUserRepository(string connection)
+        public MongoDbUserRepository(IMongoDBSettings mongoSettings)
         {
-            var client = new MongoClient(connection);
-            var database = client.GetDatabase("MigrationTool");
+            var client = new MongoClient(mongoSettings.ConnectionString);
+            var database = client.GetDatabase(mongoSettings.DatabaseName);
 
-            _users = database.GetCollection<User>("Users");
+            _users = database.GetCollection<User>(mongoSettings.UserCollectionName);
 
             var userBuilder = Builders<User>.IndexKeys;
             var indexModel = new CreateIndexModel<User>(userBuilder.Ascending(u => u.Identity));

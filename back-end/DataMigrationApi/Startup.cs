@@ -1,5 +1,6 @@
 using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
+using DataMigrationApi.Core.Entities;
 using DataMigrationApi.DAL;
 using DataMigrationApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace DataMigrationApi
@@ -25,14 +27,19 @@ namespace DataMigrationApi
         {
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
+
+            services.Configure<MongoDBSettings>(Configuration.GetSection(nameof(MongoDBSettings)));
+
+            services.AddSingleton<IMongoDBSettings>(x =>
+                x.GetRequiredService<IOptions<MongoDBSettings>>().Value);
                         
             services.AddControllers();
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ISqlServerEmailService, SqlServerEmailService>();
-            services.AddTransient<ISqlServerUserService, SqlServerUserService>();
-            services.AddTransient<IMongoDbEmailService, MongoDbEmailService>();
-            services.AddTransient<IMongoDbUserService, MongoDbUserService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ISqlServerEmailService, SqlServerEmailService>();
+            services.AddScoped<ISqlServerUserService, SqlServerUserService>();
+            services.AddScoped<IMongoDbEmailService, MongoDbEmailService>();
+            services.AddScoped<IMongoDbUserService, MongoDbUserService>();
             
             services.AddSwaggerGen(c =>
             {
