@@ -33,6 +33,7 @@ namespace DataMigrationApi.Services
 
         public Email Insert(Email entity)
         {
+            entity.ID = 0;
             var inserted = _unitOfWork.SqlServerEmailRepository.Insert(entity);
             _unitOfWork.Save();
             return inserted;

@@ -28,7 +28,7 @@ namespace DataMigrationApi.DAL
             new SqlServerUserRepository(_userContext);
 
         public IMongoDbUserRepository MongoDbRepository => _mongoDbRepository ??=
-            new MongoDbUserRepository(_mongoSettings);
+            new MongoDbRepository(_mongoSettings);
 
         public void Save()
         {

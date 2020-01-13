@@ -33,6 +33,7 @@ namespace DataMigrationApi.Services
             {
                 entity.ID = Guid.NewGuid().ToString();
             }
+            entity.Identity = 0;
 
             _unitOfWork.SqlServerUserRepository.Insert(entity);
             _unitOfWork.Save();
