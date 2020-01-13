@@ -54,6 +54,9 @@ namespace DataMigrationApi.DAL
 
             builder.Entity<Email>(email =>
             {
+                email.Property(e => e.ID)
+                    .UseIdentityColumn();
+
                 email.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(50);

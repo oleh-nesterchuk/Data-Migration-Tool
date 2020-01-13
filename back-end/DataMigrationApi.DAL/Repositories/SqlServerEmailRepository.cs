@@ -24,11 +24,6 @@ namespace DataMigrationApi.DAL.Repositories
                 .Include(u => u.Emails)
                 .ToList()
                 .Find(u => u.ID == id);
-            if (user == null)
-            {
-                return null;
-            }
-
             return user.Emails;
         }
 
@@ -44,12 +39,7 @@ namespace DataMigrationApi.DAL.Repositories
         public Email Update(Email entity)
         {
             var email = _userContext.Emails.Find(entity.ID);
-            if (email == null)
-            {
-                return null;
-            }
 
-            entity.UserID = email.UserID;
             _userContext.Entry(email).CurrentValues.SetValues(entity);
             return email;
         }
@@ -57,11 +47,6 @@ namespace DataMigrationApi.DAL.Repositories
         public void Delete(int id)
         {
             var email = GetById(id);
-            if (email == null)
-            {
-                return;
-            }
-
             _userContext.Emails.Remove(email);
         }
     }
