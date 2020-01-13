@@ -35,13 +35,10 @@ export class DbTableComponent implements OnInit {
               }
 
   ngOnInit() {
-
-
     this.isSql = this.tableHeader.includes('SQL') ? true : false;
     this.getSql.getUsers(this.queryParams).subscribe(data => {
       this.data[this.tableName] = data as User[];
     });
-    this.dragulaService.destroy('COPYABLE');
   }
 
   transfer(index: number) {
