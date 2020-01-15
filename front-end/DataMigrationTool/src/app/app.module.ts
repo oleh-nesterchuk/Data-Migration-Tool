@@ -6,15 +6,14 @@ import { DragulaModule } from 'ng2-dragula';
 
 import { AppComponent } from './components/app/app.component';
 import { DbTableComponent } from './components/db-table/db-table.component';
-import { DataService } from './services/data.service';
-import { NgbdModalContent } from './components/modal/modal-component';
+import { EmailsModalComponent } from './components/modal/emails-modal.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     DbTableComponent,
-    NgbdModalContent
+    EmailsModalComponent
   ],
   imports: [
     BrowserModule,
@@ -22,8 +21,8 @@ import { NgbdModalContent } from './components/modal/modal-component';
     NgbModule,
     DragulaModule.forRoot()
   ],
-  providers: [DataService],
+  providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [NgbdModalContent]
+  entryComponents: [EmailsModalComponent]
 })
 export class AppModule { }

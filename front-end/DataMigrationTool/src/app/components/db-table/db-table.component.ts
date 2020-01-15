@@ -1,12 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DragulaService } from 'ng2-dragula';
 
-import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 import { DataService } from 'src/app/services/data.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgbdModalContent } from '../modal/modal-component';
-import { Email } from 'src/app/interfaces/email';
-import { DragulaService } from 'ng2-dragula';
+import { EmailsModalComponent } from 'src/app/components/modal/emails-modal.component';
 
 
 @Component({
@@ -18,11 +16,13 @@ export class DbTableComponent implements OnInit {
   columns = ['ID', 'Name', 'Surname', 'Birth Date', 'Age', 'Emails', 'Transfer'];
   columnNames: ['ID', 'firstName', 'lastName', 'birthDate', 'age', 'emails'];
   isSql: boolean;
+  transferString: string;
+  emailString: string;
+  userString: string;
   @Input() tableName: string;
   @Input() tableHeader: string;
-  @Input() queryParams: string;
 
-  constructor(private getSql: UserService,
+  constructor(private httpService: UserService,
               protected data: DataService,
               private modalService: NgbModal,
               private dragulaService: DragulaService) {
@@ -35,29 +35,35 @@ export class DbTableComponent implements OnInit {
               }
 
   ngOnInit() {
-    this.isSql = this.tableHeader.includes('SQL') ? true : false;
-    this.getSql.getUsers(this.queryParams).subscribe(data => {
-      this.data[this.tableName] = data as User[];
-    });
+    if (this.tableHeader.includes('SQL')) {
+      this.isSql = true;
+      this.transferString = 'SendToMongoDb';
+      this.emailString = 'SqlServerEmail';
+      this.userString = 'SqlServerUser';
+    } else {
+      this.isSql = false;
+      this.transferString = 'SendToSqlServer';
+      this.emailString = 'MongoDbEmail';
+      this.userString = 'MongoDbUser';
+    }
+
+    this.loadUsers();
+  }
+
+  loadUsers() {
+    this.httpService.fetchUsers(this.userString, this.tableName);
   }
 
   transfer(index: number) {
-    let destination = this.isSql ? 'SendToMongoDb' : 'SendToSqlServer';
-    destination += '/' + this.data[this.tableName][index].id;
-    const neighbour = this.tableName === 'sqlUsers' ? 'mongoUsers' : 'sqlUsers';
-    this.getSql.getUsers(destination).subscribe(data => {
-      this.data[neighbour].push(data as User);
-    }, data => {
-      alert(data.error);
-    });
+    const query = this.transferString + '/' + this.data[this.tableName][index].id;
+
+    this.httpService.transferUser(query, this.userString);
   }
 
   loadEmails(index: number) {
-    let query = this.isSql ? 'SqlServerEmail' : 'MongoDbEmail';
-    query += '?id=' + this.data[this.tableName][index].id;
-    this.getSql.getUsers(query).subscribe(data => {
-      this.data.emails = data as Email[];
-    });
-    this.modalService.open(NgbdModalContent);
+    const query = this.emailString + '?id=' + this.data[this.tableName][index].id;
+    this.httpService.fetchEmails(query);
+
+    this.modalService.open(EmailsModalComponent);
   }
 }
