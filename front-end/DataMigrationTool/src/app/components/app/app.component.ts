@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, Subscription } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DataService } from '../../services/data.service';
+import { AddUserModalComponent } from '../modals/add-user-modal/add-user-modal.component';
 
 
 @Component({
@@ -10,14 +10,15 @@ import { DataService } from '../../services/data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   title = 'DataMigrationTool';
 
-  constructor(protected data: DataService) {}
+  constructor(protected data: DataService, private modalService: NgbModal) {}
 
   ngOnInit() {
   }
 
-  ngOnDestroy() {
+  addUser() {
+    this.modalService.open(AddUserModalComponent);
   }
 }

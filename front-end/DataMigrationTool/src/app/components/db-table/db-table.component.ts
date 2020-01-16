@@ -4,7 +4,7 @@ import { DragulaService } from 'ng2-dragula';
 
 import { UserService } from 'src/app/services/user.service';
 import { DataService } from 'src/app/services/data.service';
-import { EmailsModalComponent } from 'src/app/components/modal/emails-modal.component';
+import { EmailsModalComponent } from 'src/app/components/modals/emails-modal/emails-modal.component';
 
 
 @Component({

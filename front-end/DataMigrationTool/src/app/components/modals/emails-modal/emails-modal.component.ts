@@ -9,7 +9,7 @@ import { DataService } from 'src/app/services/data.service';
   templateUrl: './emails-modal.component.html'
 })
 export class EmailsModalComponent {
-  @Input() name;
+  // @Input() name;
   columns = ['ID', 'Value', 'Is Confirmed'];
 
   constructor(public activeModal: NgbActiveModal, protected data: DataService) {}

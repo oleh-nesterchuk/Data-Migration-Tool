@@ -1,0 +1,59 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add a user</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="newUserForm">
+    <h5>User info</h5>
+    <div class="form-group mb-3">
+      <input type="text" class="form-control" placeholder="First Name" formControlName="firstName">
+      <span
+        *ngIf="!newUserForm.get('firstName').valid && newUserForm.get('firstName').touched"
+        class="text-danger">Please provide a valid first name</span>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name"
+        formControlName="lastName">
+        <span
+        *ngIf="!newUserForm.get('lastName').valid && newUserForm.get('lastName').touched"
+        class="text-danger">Please provide a valid last name</span>
+    </div>
+
+    <div class="form-group mb-3">
+      <input type="date" class="form-control" formControlName="birthDate">
+      <span
+        *ngIf="!newUserForm.get('birthDate').valid && newUserForm.get('birthDate').touched"
+        class="text-danger">Please provide a valid date</span>
+    </div>
+
+    <div formArrayName="emails">
+      <h5>Emails</h5>
+      <div *ngFor="let email of newUserForm.get('emails')['controls']; let i = index">
+        <div [formGroupName]="i">
+          <div class="form-group mb-3">
+            <input type="text" class="form-control" formControlName="value">
+            <span
+              *ngIf="!newUserForm.get('emails')['controls'][i].get('value').valid &&
+              newUserForm.get('emails')['controls'][i].get('value').touched"
+              class="text-danger">Please provide a valid email</span>
+          </div>
+          <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" [id]="'isConfirmed' + i"
+            formControlName="isConfirmed">
+            <label class="form-check-label" [for]="'isConfirmed' + i">Confirmed</label>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-secondary" type="button" (click)="onAddEmail()">Add email</button>
+    </div>
+
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="addUser()">Add</button>
+</div>
