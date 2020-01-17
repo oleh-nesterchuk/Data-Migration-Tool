@@ -21,4 +21,8 @@ export class AppComponent implements OnInit {
   addUser() {
     this.modalService.open(AddUserModalComponent);
   }
+
+  deleteUser() {
+    this.data.deleteMode = !this.data.deleteMode;
+  }
 }

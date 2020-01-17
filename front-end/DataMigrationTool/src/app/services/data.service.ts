@@ -10,6 +10,7 @@ export class DataService {
   sqlUsers: User[];
   mongoUsers: User[];
   emails: Email[];
+  deleteMode: boolean;
 
   constructor() { }
 }

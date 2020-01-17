@@ -57,6 +57,12 @@ export class DbTableComponent implements OnInit {
     this.httpService.fetchUsers(this.userString, this.tableName);
   }
 
+  deleteUser(index: number) {
+    const query = this.userString + '/' + this.data[this.tableName][index].id;
+
+    this.httpService.deleteUser(query, this.tableName, index);
+  }
+
   transfer(index: number) {
     const query = this.transferString + '/' + this.data[this.tableName][index].id;
 

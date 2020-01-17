@@ -1,17 +1,18 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm" id="sql">
+    <div class="col-sm m-2" id="sql">
       <app-db-table [tableHeader]="'SQL Server'" [tableName]="'sqlUsers'">
       </app-db-table>
     </div>
-    <div class="col-sm" id="mongo">
+    <div class="col-sm m-2" id="mongo">
       <app-db-table [tableHeader]="'MongoDb'" [tableName]="'mongoUsers'">
       </app-db-table>
     </div>
   </div>
   <div class="row">
-    <div class="col-sm">
-      <button class="btn btn-primary" (click)="addUser()">Add new User</button>
+    <div class="col-sm ml-2 mb-2">
+      <button class="btn btn-primary mr-3" (click)="addUser()">Add new User</button>
+      <button class="btn btn-danger" (click)="deleteUser()">Delete a User</button>
     </div>
   </div>
 </div>

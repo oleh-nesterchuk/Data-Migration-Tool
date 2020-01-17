@@ -3,6 +3,7 @@
   <table class="table table-hover">
     <thead class="thead-light">
       <tr>
+        <th *ngIf="data.deleteMode">Del</th>
         <th *ngFor="let col of columns" scope="col">
           {{col}}
         </th>
@@ -10,6 +11,9 @@
       </thead>
       <tbody dragula="COPYABLE">
     <tr *ngFor="let user of data[tableName]; let i = index">
+      <th *ngIf="data.deleteMode">
+        <img src="../../../assets/delete.png" alt="delete" (click)="deleteUser(i)">
+      </th>
       <th scope="row">{{user.id | slice:-4}}</th>
       <td>{{user.firstName | titlecase}}</td>
       <td>{{user.lastName | titlecase}}</td>

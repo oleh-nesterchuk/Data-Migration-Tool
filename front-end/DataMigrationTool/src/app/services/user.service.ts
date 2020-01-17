@@ -37,6 +37,16 @@ export class UserService {
       });
   }
 
+  deleteUser(parameters: string, destination: string, index: number) {
+    const query = environment.connection + parameters;
+
+    this.http
+      .delete<User>(query)
+      .subscribe(() => {
+        this.dataService[destination].splice(index, 1);
+      });
+  }
+
   transferUser(parameters: string, destination: string) {
     const query = environment.connection + parameters;
 
