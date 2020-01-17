@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DragulaModule } from 'ng2-dragula';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './components/app/app.component';
@@ -26,7 +26,7 @@ import { AddUserModalComponent } from './components/modals/add-user-modal/add-us
     FormsModule,
     DragulaModule.forRoot()
   ],
-  providers: [],
+  providers: [DragulaService],
   bootstrap: [AppComponent],
   entryComponents: [EmailsModalComponent, AddUserModalComponent]
 })
