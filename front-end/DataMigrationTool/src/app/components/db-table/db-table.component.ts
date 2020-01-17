@@ -19,6 +19,7 @@ export class DbTableComponent implements OnInit {
   transferString: string;
   emailString: string;
   userString: string;
+  neighbourTable: string;
   @Input() tableName: string;
   @Input() tableHeader: string;
 
@@ -40,11 +41,13 @@ export class DbTableComponent implements OnInit {
       this.transferString = 'SendToMongoDb';
       this.emailString = 'SqlServerEmail';
       this.userString = 'SqlServerUser';
+      this.neighbourTable = 'mongoUsers';
     } else {
       this.isSql = false;
       this.transferString = 'SendToSqlServer';
       this.emailString = 'MongoDbEmail';
       this.userString = 'MongoDbUser';
+      this.neighbourTable = 'sqlUsers';
     }
 
     this.loadUsers();
@@ -57,7 +60,7 @@ export class DbTableComponent implements OnInit {
   transfer(index: number) {
     const query = this.transferString + '/' + this.data[this.tableName][index].id;
 
-    this.httpService.transferUser(query, this.userString);
+    this.httpService.transferUser(query, this.neighbourTable);
   }
 
   loadEmails(index: number) {

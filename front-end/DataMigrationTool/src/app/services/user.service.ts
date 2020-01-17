@@ -12,7 +12,20 @@ import { Email } from '../interfaces/email';
 })
 export class UserService {
   users: User[];
+
   constructor(private http: HttpClient, private dataService: DataService) { }
+
+  addUser(parameters: string, user: User) {
+    const query = environment.connection + parameters;
+    const database = parameters.includes('Sql') ? 'sqlUsers' : 'mongoUsers';
+    this.http
+      .post<User>(query, user)
+      .subscribe(data => {
+        this.dataService[database].push(data);
+      }, error => {
+        console.log(error.error.title);
+      });
+  }
 
   fetchUsers(parameters: string, database: string) {
     const query = environment.connection + parameters;

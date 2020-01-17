@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { DataService } from 'src/app/services/data.service';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
@@ -13,7 +14,11 @@ import { DataService } from 'src/app/services/data.service';
 export class AddUserModalComponent implements OnInit {
 
   newUserForm: FormGroup;
-  constructor(public activeModal: NgbActiveModal, protected data: DataService) { }
+  destination = 'SqlServerUser';
+
+  constructor(public activeModal: NgbActiveModal,
+              protected data: DataService,
+              private httpService: UserService) { }
 
   ngOnInit() {
     this.newUserForm = new FormGroup({
@@ -25,7 +30,11 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addUser() {
-    console.log(this.newUserForm);
+    this.newUserForm.markAllAsTouched();
+    if (this.newUserForm.invalid) {
+      return;
+    }
+    this.httpService.addUser(this.destination, this.newUserForm.value);
   }
 
   onAddEmail() {

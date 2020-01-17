@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DragulaModule } from 'ng2-dragula';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { AppComponent } from './components/app/app.component';
 import { DbTableComponent } from './components/db-table/db-table.component';
@@ -23,6 +23,7 @@ import { AddUserModalComponent } from './components/modals/add-user-modal/add-us
     HttpClientModule,
     ReactiveFormsModule,
     NgbModule,
+    FormsModule,
     DragulaModule.forRoot()
   ],
   providers: [],

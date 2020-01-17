@@ -25,6 +25,8 @@ namespace DataMigrationApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
 
@@ -46,8 +48,6 @@ namespace DataMigrationApi
                 c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Data Migration tool", Version = "v1.0" });
                 c.CustomSchemaIds(x => x.FullName);
             });
-
-            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,7 +57,9 @@ namespace DataMigrationApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(x => x.AllowAnyOrigin());
+            app.UseCors(x => x.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 
             app.UseSwagger();
 

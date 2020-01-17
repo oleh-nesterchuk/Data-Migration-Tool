@@ -6,6 +6,20 @@
 </div>
 
 <div class="modal-body">
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="destination" id="sqlOption"
+      value="SqlServerUser" [(ngModel)]="destination">
+    <label class="form-check-label" for="sqlOption">
+      Add to SQL Server
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" type="radio" name="destination" id="mongoOption"
+      value="MongoDbUser" [(ngModel)]="destination">
+    <label class="form-check-label" for="mongoOption">
+      Add to MongoDb
+    </label>
+  </div>
   <form [formGroup]="newUserForm">
     <h5>User info</h5>
     <div class="form-group mb-3">
