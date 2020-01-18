@@ -26,6 +26,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
   @Input() tableHeader: string;
   @ViewChild('tbody', {static: false}) tbody: ElementRef;
   isLoading: boolean;
+  errorMessage: string;
   subs = new Subscription();
 
   constructor(private httpService: UserService, protected dataService: DataService,
@@ -33,13 +34,6 @@ export class DbTableComponent implements OnInit, OnDestroy {
     const group = this.dragulaService.find('COPYABLE');
     if (group === undefined) {
       this.dragulaService.createGroup('COPYABLE', {
-        accepts: (el => {
-          if (this.dataService[this.neighbourTable].some((e: User) => e.id ===
-              el.firstElementChild.innerHTML)) {
-            return false;
-          }
-          return true;
-        }),
         moves: () => {
           return !(this.dataService.editMode || this.dataService.deleteMode);
         },
@@ -72,11 +66,13 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
   loadUsers() {
     this.isLoading = true;
+    this.errorMessage = null;
     this.httpService.fetchUsers(this.userString).subscribe(data => {
       this.dataService[this.tableName] = data;
       this.isLoading = false;
     }, error => {
       this.isLoading = false;
+      this.errorMessage = error.message;
     });
   }
 

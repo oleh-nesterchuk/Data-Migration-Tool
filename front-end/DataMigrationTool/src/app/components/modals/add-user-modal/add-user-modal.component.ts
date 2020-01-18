@@ -43,4 +43,9 @@ export class AddUserModalComponent implements OnInit {
     });
     (this.newUserForm.get('emails') as FormArray).push(email);
   }
+
+  deleteEmail(index: number) {
+    console.log('deleting email ' + index);
+    (this.newUserForm.get('emails') as FormArray).removeAt(index);
+  }
 }
