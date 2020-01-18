@@ -11,6 +11,7 @@ export class DataService {
   mongoUsers: User[];
   emails: Email[];
   deleteMode: boolean;
+  editMode: boolean;
 
   constructor() { }
 }

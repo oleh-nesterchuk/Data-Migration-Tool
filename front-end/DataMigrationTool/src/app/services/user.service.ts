@@ -37,6 +37,16 @@ export class UserService {
       });
   }
 
+  editUser(parameters: string, user: User, database: string, index: number) {
+    const query = environment.connection + parameters;
+
+    this.http
+      .put<User>(query, user)
+      .subscribe(data => {
+        this.dataService[database][index] = data;
+      });
+  }
+
   deleteUser(parameters: string, destination: string, index: number) {
     const query = environment.connection + parameters;
 

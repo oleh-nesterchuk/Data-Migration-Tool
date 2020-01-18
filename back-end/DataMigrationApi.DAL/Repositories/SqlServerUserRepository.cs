@@ -29,7 +29,7 @@ namespace DataMigrationApi.DAL.Repositories
         {
             var user = GetById(entity.ID);
             _userContext.Entry(user).CurrentValues.SetValues(entity);
-            return entity;
+            return GetById(entity.ID);
         }
 
         public void Delete(string id)

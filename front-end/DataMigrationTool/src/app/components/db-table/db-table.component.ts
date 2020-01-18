@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 import { DataService } from 'src/app/services/data.service';
 import { EmailsModalComponent } from 'src/app/components/modals/emails-modal/emails-modal.component';
 import { User } from 'src/app/interfaces/user';
+import { EditUserModalComponent } from '../modals/edit-user-modal/edit-user-modal.component';
 
 
 @Component({
@@ -17,7 +18,6 @@ import { User } from 'src/app/interfaces/user';
 export class DbTableComponent implements OnInit, OnDestroy {
   columns = ['ID', 'Name', 'Surname', 'Birth Date', 'Age', 'Emails', 'Transfer'];
   columnNames: ['ID', 'firstName', 'lastName', 'birthDate', 'age', 'emails'];
-  isSql: boolean;
   @Input() transferString: string;
   @Input() emailString: string;
   @Input() userString: string;
@@ -39,6 +39,9 @@ export class DbTableComponent implements OnInit, OnDestroy {
           }
           return true;
         }),
+        moves: () => {
+          return !(this.data.editMode || this.data.deleteMode);
+        },
         copy: true
       });
     }
@@ -69,6 +72,15 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
   loadUsers() {
     this.httpService.fetchUsers(this.userString, this.tableName);
+  }
+
+  editUser(index: number) {
+    const query = this.userString + '/' + this.data[this.tableName][index].id;
+
+    const modalRef = this.modalService.open(EditUserModalComponent);
+    modalRef.componentInstance.query = query;
+    modalRef.componentInstance.userIndex = index;
+    modalRef.componentInstance.table = this.tableName;
   }
 
   deleteUser(index: number) {

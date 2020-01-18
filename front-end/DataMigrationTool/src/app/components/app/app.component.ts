@@ -22,6 +22,10 @@ export class AppComponent implements OnInit {
     this.modalService.open(AddUserModalComponent);
   }
 
+  editUser() {
+    this.data.editMode = !this.data.editMode;
+  }
+
   deleteUser() {
     this.data.deleteMode = !this.data.deleteMode;
   }

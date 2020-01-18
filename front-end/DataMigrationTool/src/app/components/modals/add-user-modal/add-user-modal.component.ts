@@ -16,8 +16,7 @@ export class AddUserModalComponent implements OnInit {
   newUserForm: FormGroup;
   destination = 'SqlServerUser';
 
-  constructor(public activeModal: NgbActiveModal,
-              protected data: DataService,
+  constructor(public activeModal: NgbActiveModal, protected data: DataService,
               private httpService: UserService) { }
 
   ngOnInit() {

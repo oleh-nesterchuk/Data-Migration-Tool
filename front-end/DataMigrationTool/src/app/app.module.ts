@@ -9,6 +9,7 @@ import { AppComponent } from './components/app/app.component';
 import { DbTableComponent } from './components/db-table/db-table.component';
 import { EmailsModalComponent } from './components/modals/emails-modal/emails-modal.component';
 import { AddUserModalComponent } from './components/modals/add-user-modal/add-user-modal.component';
+import { EditUserModalComponent } from './components/modals/edit-user-modal/edit-user-modal.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { AddUserModalComponent } from './components/modals/add-user-modal/add-us
     AppComponent,
     DbTableComponent,
     EmailsModalComponent,
-    AddUserModalComponent
+    AddUserModalComponent,
+    EditUserModalComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +30,10 @@ import { AddUserModalComponent } from './components/modals/add-user-modal/add-us
   ],
   providers: [DragulaService],
   bootstrap: [AppComponent],
-  entryComponents: [EmailsModalComponent, AddUserModalComponent]
+  entryComponents: [
+    EmailsModalComponent, 
+    AddUserModalComponent, 
+    EditUserModalComponent
+  ]
 })
 export class AppModule { }

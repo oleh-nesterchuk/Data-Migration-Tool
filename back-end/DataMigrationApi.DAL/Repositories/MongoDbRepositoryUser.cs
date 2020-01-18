@@ -69,7 +69,7 @@ namespace DataMigrationApi.DAL.Repositories
                 entity.Emails[i].ID = FindMaxEmailIdentity() + i + 1;
             }
             _users.InsertOne(entity);
-            return entity;
+            return entity.CalculateAge();
         }
 
         public User Update(User entity)
@@ -78,7 +78,7 @@ namespace DataMigrationApi.DAL.Repositories
             var user = _users.Find(filter).FirstOrDefault();
             entity.Identity = user.Identity;
             _users.ReplaceOne(filter, entity);
-            return entity;
+            return entity.CalculateAge();
         }
 
         public void Delete(string id) =>
