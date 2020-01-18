@@ -73,10 +73,16 @@
       </div>
       <button class="btn btn-secondary" type="button" (click)="onAddEmail()">Add email</button>
     </div>
-
   </form>
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+    {{errorMessage}}
+    <div><button class="btn btn-danger" (click)="errorMessage = null">Ok</button></div>
+  </div>
 </div>
 
 <div class="modal-footer">
+  <div *ngIf="isAdding" class="spinner-border" role="status">
+    <span class="sr-only">Adding...</span>
+  </div>
   <button type="button" class="btn btn-primary" (click)="addUser()">Add</button>
 </div>

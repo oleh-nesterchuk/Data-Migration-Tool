@@ -14,9 +14,12 @@ import { UserService } from 'src/app/services/user.service';
 export class AddUserModalComponent implements OnInit {
 
   newUserForm: FormGroup;
+  errorMessage: string;
+  isAdding: boolean;
+  table: string;
   destination = 'SqlServerUser';
 
-  constructor(public activeModal: NgbActiveModal, protected data: DataService,
+  constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
               private httpService: UserService) { }
 
   ngOnInit() {
@@ -29,11 +32,27 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addUser() {
+    this.isAdding = true;
+    this.errorMessage = null;
     this.newUserForm.markAllAsTouched();
     if (this.newUserForm.invalid) {
       return;
     }
-    this.httpService.addUser(this.destination, this.newUserForm.value);
+    if (this.destination.includes('Mongo')) {
+      this.table = 'mongoUsers';
+    }
+    else {
+      this.table = 'sqlUsers';
+    }
+    this.httpService.addUser(this.destination, this.newUserForm.value)
+      .subscribe(data => {
+        this.dataService[this.table].push(data);
+        this.isAdding = false;
+        this.newUserForm.reset();
+      }, error => {
+        this.isAdding = true;
+        this.errorMessage = error.message;
+      });
   }
 
   onAddEmail() {

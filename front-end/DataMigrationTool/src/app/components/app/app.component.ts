@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DataService } from '../../services/data.service';
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   }
 
   addUser() {
-    this.modalService.open(AddUserModalComponent);
+    this.modalService.open(AddUserModalComponent, { scrollable: true });
   }
 
   editUser() {

@@ -18,7 +18,7 @@
         <th *ngIf="dataService.editMode">
           <img src="../../../assets/edit.png" alt="edit" (click)="editUser(i)">
         </th>
-        <th class="shortener" scope="row">{{user.id}}</th>
+        <th scope="row"><abbr [title]="user.id">{{user.id | slice:-4}}</abbr></th>
         <td>{{user.firstName | titlecase}}</td>
         <td>{{user.lastName | titlecase}}</td>
         <td>{{user.birthDate | date}}</td>

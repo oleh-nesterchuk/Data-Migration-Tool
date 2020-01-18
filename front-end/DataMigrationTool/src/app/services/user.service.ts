@@ -16,49 +16,33 @@ export class UserService {
 
   constructor(private http: HttpClient, private dataService: DataService) { }
 
-  addUser(parameters: string, user: User) {
-    const query = environment.connection + parameters;
-    const database = parameters.includes('Sql') ? 'sqlUsers' : 'mongoUsers';
-    this.http
-      .post<User>(query, user)
-      .subscribe(data => {
-        this.dataService[database].push(data);
-      }, error => {
-        console.log(error.error.title);
-      });
+  addUser(parameters: string, user: User): Observable<User> {
+    return this.http.post<User>(environment.connection + parameters, user);
   }
 
   fetchUsers(parameters: string): Observable<User[]> {
-    const query = environment.connection + parameters;
-
-    return this.http.get<User[]>(query);
+    return this.http.get<User[]>(environment.connection + parameters);
   }
 
   editUser(parameters: string, user: User, database: string, index: number) {
-    const query = environment.connection + parameters;
-
     this.http
-      .put<User>(query, user)
+      .put<User>(environment.connection + parameters, user)
       .subscribe(data => {
         this.dataService[database][index] = data;
       });
   }
 
   deleteUser(parameters: string, destination: string, index: number) {
-    const query = environment.connection + parameters;
-
     this.http
-      .delete<User>(query)
+      .delete<User>(environment.connection + parameters)
       .subscribe(() => {
         this.dataService[destination].splice(index, 1);
       });
   }
 
   transferUser(parameters: string, destination: string) {
-    const query = environment.connection + parameters;
-
     this.http
-      .get<User>(query)
+      .get<User>(environment.connection + parameters)
       .subscribe(data => {
         this.dataService[destination].push(data);
       }, data => {
@@ -67,10 +51,8 @@ export class UserService {
   }
 
   fetchEmails(parameters: string) {
-    const query = environment.connection + parameters;
-
     this.http
-      .get<Email[]>(query)
+      .get<Email[]>(environment.connection + parameters)
       .subscribe(data => {
         this.dataService.emails = data;
       });

@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { DataService } from 'src/app/services/data.service';
 import { EmailsModalComponent } from 'src/app/components/modals/emails-modal/emails-modal.component';
-import { User } from 'src/app/interfaces/user';
 import { EditUserModalComponent } from '../modals/edit-user-modal/edit-user-modal.component';
 
 
@@ -34,33 +33,25 @@ export class DbTableComponent implements OnInit, OnDestroy {
     const group = this.dragulaService.find('COPYABLE');
     if (group === undefined) {
       this.dragulaService.createGroup('COPYABLE', {
+        copy: true,
         moves: () => {
           return !(this.dataService.editMode || this.dataService.deleteMode);
-        },
-        copy: true
-      });
-    }
-    this.subs.add(this.dragulaService.drop('COPYABLE')
-      .subscribe(({ el, target }) => {
-        setTimeout(() => {
-          const matches = document.querySelectorAll('tr[class]');
-          const matchesArray = Array.prototype.slice.call(matches);
-          matchesArray.forEach((element: Node) => {
-            element.parentNode.removeChild(element);
-          });
-        }, 10);
-
-        if (target === null || target === this.tbody.nativeElement) {
-          return;
         }
-        const query = this.transferString + '/' + el.firstElementChild.innerHTML;
-
-        this.httpService.transferUser(query, this.neighbourTable);
-      })
-    );
+      });
+    } 
   }
 
   ngOnInit() {
+    this.subs.add(this.dragulaService.drop('COPYABLE')
+      .subscribe(({ el, target }) => {
+        if (target === null || target === this.tbody.nativeElement) {
+          this.clearDragulasTable();
+          return;
+        }
+        const query = this.transferString + '/' + el.firstElementChild.innerHTML;
+        this.httpService.transferUser(query, this.neighbourTable);
+      })
+    );
     this.loadUsers();
   }
 
@@ -106,5 +97,15 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+
+  private clearDragulasTable() {
+    setTimeout(() => {
+      const matches = document.querySelectorAll('tr[class]');
+      const matchesArray = Array.prototype.slice.call(matches);
+      matchesArray.forEach((element: Node) => {
+        element.parentNode.removeChild(element);
+      });
+    }, 10);
   }
 }
