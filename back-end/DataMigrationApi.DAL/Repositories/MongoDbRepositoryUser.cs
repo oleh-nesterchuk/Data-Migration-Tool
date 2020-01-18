@@ -77,6 +77,7 @@ namespace DataMigrationApi.DAL.Repositories
             var filter = Builders<User>.Filter.Where(u => u.ID == entity.ID);
             var user = _users.Find(filter).FirstOrDefault();
             entity.Identity = user.Identity;
+            entity.Emails = user.Emails;
             _users.ReplaceOne(filter, entity);
             return entity.CalculateAge();
         }

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 
 import { DataService } from './data.service';
 import { Email } from '../interfaces/email';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -27,14 +28,10 @@ export class UserService {
       });
   }
 
-  fetchUsers(parameters: string, database: string) {
+  fetchUsers(parameters: string): Observable<User[]> {
     const query = environment.connection + parameters;
 
-    this.http
-      .get<User[]>(query)
-      .subscribe(data => {
-        this.dataService[database] = data;
-      });
+    return this.http.get<User[]>(query);
   }
 
   editUser(parameters: string, user: User, database: string, index: number) {

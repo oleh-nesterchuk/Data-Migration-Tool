@@ -25,35 +25,36 @@ export class DbTableComponent implements OnInit, OnDestroy {
   @Input() tableName: string;
   @Input() tableHeader: string;
   @ViewChild('tbody', {static: false}) tbody: ElementRef;
+  isLoading: boolean;
   subs = new Subscription();
 
-  constructor(private httpService: UserService, protected data: DataService,
+  constructor(private httpService: UserService, protected dataService: DataService,
               private modalService: NgbModal, private dragulaService: DragulaService) {
     const group = this.dragulaService.find('COPYABLE');
     if (group === undefined) {
       this.dragulaService.createGroup('COPYABLE', {
-        accepts: ((el, target, source, sibling) => {
-          if (this.data[this.neighbourTable].some((e: User) => e.id ===
+        accepts: (el => {
+          if (this.dataService[this.neighbourTable].some((e: User) => e.id ===
               el.firstElementChild.innerHTML)) {
             return false;
           }
           return true;
         }),
         moves: () => {
-          return !(this.data.editMode || this.data.deleteMode);
+          return !(this.dataService.editMode || this.dataService.deleteMode);
         },
         copy: true
       });
     }
     this.subs.add(this.dragulaService.drop('COPYABLE')
-      .subscribe(({ el, target, source }) => {
+      .subscribe(({ el, target }) => {
         setTimeout(() => {
           const matches = document.querySelectorAll('tr[class]');
           const matchesArray = Array.prototype.slice.call(matches);
           matchesArray.forEach((element: Node) => {
             element.parentNode.removeChild(element);
           });
-        }, 100);
+        }, 10);
 
         if (target === null || target === this.tbody.nativeElement) {
           return;
@@ -61,7 +62,6 @@ export class DbTableComponent implements OnInit, OnDestroy {
         const query = this.transferString + '/' + el.firstElementChild.innerHTML;
 
         this.httpService.transferUser(query, this.neighbourTable);
-        el = target = null;
       })
     );
   }
@@ -71,11 +71,17 @@ export class DbTableComponent implements OnInit, OnDestroy {
   }
 
   loadUsers() {
-    this.httpService.fetchUsers(this.userString, this.tableName);
+    this.isLoading = true;
+    this.httpService.fetchUsers(this.userString).subscribe(data => {
+      this.dataService[this.tableName] = data;
+      this.isLoading = false;
+    }, error => {
+      this.isLoading = false;
+    });
   }
 
   editUser(index: number) {
-    const query = this.userString + '/' + this.data[this.tableName][index].id;
+    const query = this.userString + '/' + this.dataService[this.tableName][index].id;
 
     const modalRef = this.modalService.open(EditUserModalComponent);
     modalRef.componentInstance.query = query;
@@ -84,19 +90,19 @@ export class DbTableComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(index: number) {
-    const query = this.userString + '/' + this.data[this.tableName][index].id;
+    const query = this.userString + '/' + this.dataService[this.tableName][index].id;
 
     this.httpService.deleteUser(query, this.tableName, index);
   }
 
   transfer(index: number) {
-    const query = this.transferString + '/' + this.data[this.tableName][index].id;
+    const query = this.transferString + '/' + this.dataService[this.tableName][index].id;
 
     this.httpService.transferUser(query, this.neighbourTable);
   }
 
   loadEmails(index: number) {
-    const query = this.emailString + '?id=' + this.data[this.tableName][index].id;
+    const query = this.emailString + '?id=' + this.dataService[this.tableName][index].id;
     this.httpService.fetchEmails(query);
 
     this.modalService.open(EmailsModalComponent);

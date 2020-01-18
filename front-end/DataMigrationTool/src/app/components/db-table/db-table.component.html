@@ -3,19 +3,19 @@
   <table class="table table-hover">
     <thead class="thead-light">
       <tr>
-        <th *ngIf="data.deleteMode">Del</th>
-        <th *ngIf="data.editMode">Edit</th>
+        <th *ngIf="dataService.deleteMode">Del</th>
+        <th *ngIf="dataService.editMode">Edit</th>
         <th *ngFor="let col of columns" scope="col">
           {{col}}
         </th>
       </tr>
     </thead>
     <tbody #tbody dragula="COPYABLE">
-      <tr *ngFor="let user of data[tableName]; let i = index">
-        <th *ngIf="data.deleteMode">
+      <tr *ngFor="let user of dataService[tableName]; let i = index">
+        <th *ngIf="dataService.deleteMode">
           <img src="../../../assets/delete.png" alt="delete" (click)="deleteUser(i)">
         </th>
-        <th *ngIf="data.editMode">
+        <th *ngIf="dataService.editMode">
           <img src="../../../assets/edit.png" alt="edit" (click)="editUser(i)">
         </th>
         <th class="shortener" scope="row">{{user.id}}</th>
@@ -30,4 +30,7 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div *ngIf="isLoading" class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
 </div>
