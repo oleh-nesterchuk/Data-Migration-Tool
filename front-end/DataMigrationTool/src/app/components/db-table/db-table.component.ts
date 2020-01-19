@@ -89,10 +89,10 @@ export class DbTableComponent implements OnInit, OnDestroy {
   }
 
   loadEmails(index: number) {
-    const query = this.emailString + '?id=' + this.dataService[this.tableName][index].id;
-    this.httpService.fetchEmails(query);
-
-    this.modalService.open(EmailsModalComponent);
+    const modalRef = this.modalService.open(EmailsModalComponent);
+    modalRef.componentInstance.emailString = this.emailString;
+    modalRef.componentInstance.userIndex = index;
+    modalRef.componentInstance.table = this.tableName;
   }
 
   ngOnDestroy() {

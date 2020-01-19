@@ -57,4 +57,20 @@ export class UserService {
         this.dataService.emails = data;
       });
   }
+
+  addEmail(parameters: string, email: Email): Observable<Email> {
+    return this.http.post<Email>(environment.connection + parameters, email);
+  }
+
+  editEmail(parameters: string, email: Email): Observable<Email> {
+    return this.http.put<Email>(environment.connection + parameters, email);
+  }
+
+  deleteEmail(parameters: string, index: number) {
+    this.http
+      .delete<Email>(environment.connection + parameters)
+      .subscribe(() => {
+        this.dataService.emails.splice(index, 1);
+      });
+  }
 }

@@ -24,9 +24,11 @@ export class AppComponent implements OnInit {
 
   editUser() {
     this.data.editMode = !this.data.editMode;
+    this.data.deleteMode = false;
   }
 
   deleteUser() {
     this.data.deleteMode = !this.data.deleteMode;
+    this.data.editMode = false;
   }
 }

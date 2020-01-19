@@ -44,12 +44,13 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Email> Post([FromBody] Email email)
+        public ActionResult<Email> Post([FromBody] Email email, string userId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Email is not valid!");
             }
+            email.UserID = userId;
             var inserted = _emailService.Insert(email);
             return inserted;
         }
