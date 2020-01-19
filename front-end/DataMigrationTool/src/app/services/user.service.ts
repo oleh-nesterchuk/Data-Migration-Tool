@@ -46,7 +46,7 @@ export class UserService {
       .subscribe(data => {
         this.dataService[destination].push(data);
       }, data => {
-        alert(data.error);
+        alert(data.message);
       });
   }
 
