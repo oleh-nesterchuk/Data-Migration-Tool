@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { DataService } from 'src/app/services/data.service';
 import { UserService } from 'src/app/services/user.service';
+import { birthDateValidator } from 'src/app/validators/birthdate.validators';
 
 
 @Component({
@@ -15,7 +16,8 @@ export class AddUserModalComponent implements OnInit {
 
   newUserForm: FormGroup;
   errorMessage: string;
-  isAdding: boolean;
+  isLoading: boolean;
+  wasAdded: boolean;
   table: string;
   destination = 'SqlServerUser';
 
@@ -32,7 +34,8 @@ export class AddUserModalComponent implements OnInit {
   }
 
   addUser() {
-    this.isAdding = true;
+    this.isLoading = true;
+    this.wasAdded = false;
     this.errorMessage = null;
     this.newUserForm.markAllAsTouched();
     if (this.newUserForm.invalid) {
@@ -47,11 +50,12 @@ export class AddUserModalComponent implements OnInit {
     this.httpService.addUser(this.destination, this.newUserForm.value)
       .subscribe(data => {
         this.dataService[this.table].push(data);
-        this.isAdding = false;
+        this.isLoading = false;
+        this.wasAdded = true;
         this.newUserForm.reset();
       }, error => {
-        this.isAdding = true;
-        this.errorMessage = error.message;
+        this.isLoading = false;
+        this.errorMessage = this.httpService.getErrorMessage(error);
       });
   }
 
@@ -64,7 +68,6 @@ export class AddUserModalComponent implements OnInit {
   }
 
   deleteEmail(index: number) {
-    console.log('deleting email ' + index);
     (this.newUserForm.get('emails') as FormArray).removeAt(index);
   }
 }

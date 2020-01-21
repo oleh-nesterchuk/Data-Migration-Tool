@@ -21,7 +21,9 @@
     </label>
   </div>
   <hr>
+  
   <form [formGroup]="newUserForm">
+
     <h5>User info</h5>
     <div class="form-group mb-3">
       <label for="firstNameAdd">First name:</label>
@@ -74,14 +76,18 @@
       <button class="btn btn-secondary" type="button" (click)="onAddEmail()">Add email</button>
     </div>
   </form>
+  <div *ngIf="wasAdded" class="alert alert-success mt-3" role="alert">
+    New user has been successfully added!
+    <div><button class="btn btn-danger" (click)="wasAdded = false">Close</button></div>
+  </div>
   <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
     {{errorMessage}}
-    <div><button class="btn btn-danger" (click)="errorMessage = null">Ok</button></div>
+    <div><button class="btn btn-danger mt-3" (click)="errorMessage = null">Close</button></div>
   </div>
 </div>
 
 <div class="modal-footer">
-  <div *ngIf="isAdding" class="spinner-border" role="status">
+  <div *ngIf="isLoading" class="spinner-border" role="status">
     <span class="sr-only">Adding...</span>
   </div>
   <button type="button" class="btn btn-primary" (click)="addUser()">Add</button>

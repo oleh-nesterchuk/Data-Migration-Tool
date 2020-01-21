@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { User } from '../interfaces/user';
 import { environment } from 'src/environments/environment';
 
@@ -24,12 +24,8 @@ export class UserService {
     return this.http.get<User[]>(environment.connection + parameters);
   }
 
-  editUser(parameters: string, user: User, database: string, index: number) {
-    this.http
-      .put<User>(environment.connection + parameters, user)
-      .subscribe(data => {
-        this.dataService[database][index] = data;
-      });
+  editUser(parameters: string, user: User): Observable<User> {
+    return this.http.put<User>(environment.connection + parameters, user)
   }
 
   deleteUser(parameters: string, destination: string, index: number) {
@@ -40,22 +36,12 @@ export class UserService {
       });
   }
 
-  transferUser(parameters: string, destination: string) {
-    this.http
-      .get<User>(environment.connection + parameters)
-      .subscribe(data => {
-        this.dataService[destination].push(data);
-      }, data => {
-        alert(data.message);
-      });
+  transferUser(parameters: string): Observable<User> {
+    return this.http.get<User>(environment.connection + parameters)
   }
 
-  fetchEmails(parameters: string) {
-    this.http
-      .get<Email[]>(environment.connection + parameters)
-      .subscribe(data => {
-        this.dataService.emails = data;
-      });
+  fetchEmails(parameters: string): Observable<Email[]> {
+    return this.http.get<Email[]>(environment.connection + parameters);
   }
 
   addEmail(parameters: string, email: Email): Observable<Email> {
@@ -72,5 +58,19 @@ export class UserService {
       .subscribe(() => {
         this.dataService.emails.splice(index, 1);
       });
+  }
+
+  getErrorMessage(error: HttpErrorResponse): string {
+    switch (error.status) {
+      case 0: {
+        return 'The server is not responding. Please, visit the page later.'
+      }
+      case 400: {
+        if (typeof error.error === 'string') {
+          return error.error;
+        }
+        return error.error.title;
+      }
+    }
   }
 }

@@ -34,6 +34,11 @@
     </div>
 
   </form>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+    <p class="mb-3">{{errorMessage}}</p>
+    <div><button class="btn btn-danger mb-3" (click)="errorMessage = null">Close</button></div>
+  </div>
 </div>
 
 <div class="modal-footer">

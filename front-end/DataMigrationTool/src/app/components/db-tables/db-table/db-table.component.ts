@@ -2,11 +2,12 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@ang
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from 'src/app/services/user.service';
 import { DataService } from 'src/app/services/data.service';
 import { EmailsModalComponent } from 'src/app/components/modals/emails-modal/emails-modal.component';
-import { EditUserModalComponent } from '../modals/edit-user-modal/edit-user-modal.component';
+import { EditUserModalComponent } from 'src/app/components/modals/edit-user-modal/edit-user-modal.component';
 
 
 @Component({
@@ -48,8 +49,13 @@ export class DbTableComponent implements OnInit, OnDestroy {
           this.clearDragulasTable();
           return;
         }
-        const query = this.transferString + '/' + el.firstElementChild.innerHTML;
-        this.httpService.transferUser(query, this.neighbourTable);
+        const query = this.transferString + '/' + el.firstElementChild
+          .firstElementChild.getAttribute('title');
+        this.httpService.transferUser(query).subscribe(data => {
+          this.dataService[this.neighbourTable].push(data);
+          }, error => {
+            this.errorMessage = this.httpService.getErrorMessage(error);
+        });
       })
     );
     this.loadUsers();
@@ -63,7 +69,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     }, error => {
       this.isLoading = false;
-      this.errorMessage = error.message;
+      this.errorMessage = this.httpService.getErrorMessage(error);
     });
   }
 
@@ -85,7 +91,11 @@ export class DbTableComponent implements OnInit, OnDestroy {
   transfer(index: number) {
     const query = this.transferString + '/' + this.dataService[this.tableName][index].id;
 
-    this.httpService.transferUser(query, this.neighbourTable);
+    this.httpService.transferUser(query).subscribe(data => {
+      this.dataService[this.neighbourTable].push(data);
+    }, error => {
+      this.errorMessage = this.httpService.getErrorMessage(error);
+    });
   }
 
   loadEmails(index: number) {

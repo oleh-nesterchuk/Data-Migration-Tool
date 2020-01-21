@@ -13,6 +13,7 @@ import { Email } from 'src/app/interfaces/email';
 })
 export class EmailsModalComponent implements OnInit, OnDestroy {
   columns = ['ID', 'Value', 'Is Confirmed'];
+  isLoading: boolean;
   isAdding: boolean;
   isEditing: boolean;
   isDeleting: boolean;
@@ -27,7 +28,13 @@ export class EmailsModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const query = this.emailString + '?id=' + this.dataService[this.table][this.userIndex].id;
-    this.httpService.fetchEmails(query);
+    this.isLoading = true;
+    this.httpService.fetchEmails(query).subscribe(data =>{
+      this.dataService.emails = data;
+      this.isLoading = false;
+    }, error => {
+      this.isLoading = false;
+    });
 
     this.emailForm = new FormGroup({
       value: new FormControl(null, [Validators.required, Validators.email]),

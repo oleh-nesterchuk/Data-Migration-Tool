@@ -4,8 +4,10 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+
 <div class="modal-body">
   <table class="table table-hover table-bordered">
+    
     <thead class="thead-light">
       <tr>
         <th *ngIf="isDeleting">Del</th>
@@ -27,6 +29,10 @@
       <td>{{email.isConfirmed}}</td>
     </tr>
   </table>
+  <div *ngIf="isLoading" class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+
   <div *ngIf="isAdding || (isEditing && editIndex != -1)" [formGroup]="emailForm">
     <div class="form-group mb-3">
       <label for="emailAddNew">Email:</label>
