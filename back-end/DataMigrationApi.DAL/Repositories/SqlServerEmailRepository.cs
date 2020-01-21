@@ -1,5 +1,6 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,10 @@ namespace DataMigrationApi.DAL.Repositories
             _userContext = userContext;
         }
 
-        public IEnumerable<Email> GetAll() =>
-            _userContext.Emails;
+        public IEnumerable<Email> GetAll(EmailParameters parameters) =>
+            _userContext.Emails
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
 
         public IEnumerable<Email> GetAllUserEmails(string id)
         {
@@ -25,6 +28,17 @@ namespace DataMigrationApi.DAL.Repositories
                 .ToList()
                 .Find(u => u.ID == id);
             return user.Emails;
+        }
+
+        public IEnumerable<Email> GetAllUserEmails(string id, EmailParameters parameters)
+        {
+            var user = _userContext.Users
+                .Include(u => u.Emails)
+                .ToList()
+                .Find(u => u.ID == id);
+            return user.Emails
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
         }
 
         public Email GetById(int id) =>

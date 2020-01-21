@@ -1,5 +1,6 @@
 ﻿using DataMigrationApi.Core.Abstractions.Repositories;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Driver;
@@ -47,12 +48,21 @@ namespace DataMigrationApi.DAL.Repositories
             _ageProjection = Builders<User>.Projection.Expression(u => u.CalculateAge());
         }
 
-        public IEnumerable<User> GetAll() =>
+        public IEnumerable<User> GetAll(UserParameters parameters) =>
             _users.Find(FilterDefinition<User>.Empty)
-            .Project(_emailProjection).Project(_ageProjection).Project(_ageProjection).ToEnumerable();
+                .Project(_emailProjection)
+                .Project(_ageProjection)
+                .ToEnumerable()
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
 
-        public IEnumerable<User> GetAllWithoutProjection() =>
-            _users.Find(FilterDefinition<User>.Empty).ToEnumerable();
+        public IEnumerable<User> GetAllWithoutProjection(UserParameters parameters) =>
+            _users.Find(FilterDefinition<User>.Empty)
+                .Project(_emailProjection)
+                .Project(_ageProjection)
+                .ToEnumerable()
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
 
         public User GetById(string id) =>
             _users.Find(u => u.ID == id).FirstOrDefault();

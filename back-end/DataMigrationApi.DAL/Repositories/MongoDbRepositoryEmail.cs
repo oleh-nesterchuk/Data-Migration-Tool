@@ -1,4 +1,5 @@
 ﻿using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,15 +8,25 @@ namespace DataMigrationApi.DAL.Repositories
 {
     public partial class MongoDbRepository
     {
-        public IEnumerable<Email> GetEmails()
+        public IEnumerable<Email> GetEmails(EmailParameters parameters)
         {
             var emailProjection = Builders<User>.Projection.Expression<IEnumerable<Email>>(u => u.Emails);
             return _users.Find(FilterDefinition<User>.Empty).Project(emailProjection)
-                .ToEnumerable().SelectMany(e => e);
+                .ToEnumerable()
+                .SelectMany(e => e)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
         }
 
         public IEnumerable<Email> GetAllUserEmails(string id) =>
             _users.Find(u => u.ID == id).FirstOrDefault()?.Emails;
+
+        public IEnumerable<Email> GetAllUserEmails(string id, EmailParameters parameters) =>
+            _users.Find(u => u.ID == id)
+                .FirstOrDefault()?
+                .Emails
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
 
         public Email GetEmailById(int id)
         {

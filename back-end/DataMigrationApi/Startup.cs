@@ -25,7 +25,12 @@ namespace DataMigrationApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
 
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
@@ -57,10 +62,8 @@ namespace DataMigrationApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(x => x.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
-
+            app.UseCors("MyPolicy");
+            
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

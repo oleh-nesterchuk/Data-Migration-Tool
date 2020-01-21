@@ -1,6 +1,7 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using System.Collections.Generic;
 
 namespace DataMigrationApi.Services
@@ -13,8 +14,8 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Email> Get() =>
-            _unitOfWork.SqlServerEmailRepository.GetAll();
+        public IEnumerable<Email> Get(EmailParameters parameters) =>
+            _unitOfWork.SqlServerEmailRepository.GetAll(parameters);
 
         public IEnumerable<Email> GetAllUserEmails(string id)
         {
@@ -25,6 +26,18 @@ namespace DataMigrationApi.Services
             }
 
             var emails = _unitOfWork.SqlServerEmailRepository.GetAllUserEmails(id);
+            return emails;
+        }
+
+        public IEnumerable<Email> GetAllUserEmails(string id, EmailParameters parameters)
+        {
+            var user = _unitOfWork.SqlServerUserRepository.GetById(id);
+            if (user == null)
+            {
+                return null;
+            }
+
+            var emails = _unitOfWork.SqlServerEmailRepository.GetAllUserEmails(id, parameters);
             return emails;
         }
 
