@@ -25,7 +25,6 @@ namespace DataMigrationApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
 
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
@@ -36,6 +35,8 @@ namespace DataMigrationApi
                 x.GetRequiredService<IOptions<MongoDBSettings>>().Value);
                         
             services.AddControllers();
+
+            services.AddCors();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ISqlServerEmailService, SqlServerEmailService>();
@@ -57,10 +58,6 @@ namespace DataMigrationApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(x => x.AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
-
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -72,6 +69,11 @@ namespace DataMigrationApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x.SetIsOriginAllowed(o => true)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
 
             app.UseAuthorization();
 
