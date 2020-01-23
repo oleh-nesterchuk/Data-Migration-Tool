@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { DataService } from 'src/app/services/data.service';
-import { UserService } from 'src/app/services/user.service';
+import { RequestService } from 'src/app/services/request.service';
 import { Email } from 'src/app/interfaces/email';
 
 
@@ -24,7 +24,7 @@ export class EmailsModalComponent implements OnInit, OnDestroy {
   @Input() table : string;
   
   constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
-              private httpService: UserService) {}
+              private httpService: RequestService) {}
 
   ngOnInit() {
     const query = this.emailString + '?id=' + this.dataService[this.table][this.userIndex].id;
@@ -86,7 +86,9 @@ export class EmailsModalComponent implements OnInit, OnDestroy {
 
   deleteEmail(index: number) {
     const query = this.emailString + '/' + this.dataService.emails[index].id;
-    this.httpService.deleteEmail(query, index);
+    this.httpService.deleteEmail(query).subscribe(() => {
+      this.dataService.emails.splice(index, 1);
+    });
   }
 
   ngOnDestroy() {

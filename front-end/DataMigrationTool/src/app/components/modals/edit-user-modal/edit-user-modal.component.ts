@@ -3,9 +3,8 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DataService } from 'src/app/services/data.service';
-import { UserService } from 'src/app/services/user.service';
+import { RequestService } from 'src/app/services/request.service';
 import { User } from 'src/app/interfaces/user';
-import { birthDateValidator } from 'src/app/validators/birthdate.validators';
 
 
 @Component({
@@ -24,7 +23,7 @@ export class EditUserModalComponent implements OnInit {
   @Input() table: string;
 
   constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
-              private httpService: UserService) { }
+              private httpService: RequestService) { }
 
   ngOnInit() {
     this.user = this.dataService[this.table][this.userIndex];

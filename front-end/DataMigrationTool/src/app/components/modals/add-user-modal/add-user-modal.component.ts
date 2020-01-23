@@ -3,7 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { DataService } from 'src/app/services/data.service';
-import { UserService } from 'src/app/services/user.service';
+import { RequestService } from 'src/app/services/request.service';
 import { birthDateValidator } from 'src/app/validators/birthdate.validators';
 
 
@@ -22,7 +22,7 @@ export class AddUserModalComponent implements OnInit {
   destination = 'SqlServerUser';
 
   constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
-              private httpService: UserService) { }
+              private httpService: RequestService) { }
 
   ngOnInit() {
     this.newUserForm = new FormGroup({
