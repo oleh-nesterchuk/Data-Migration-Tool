@@ -1,14 +1,12 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
 using DataMigrationApi.Core.Paging;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataMigrationApi.Controllers
 {
-    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class SqlServerUserController : ControllerBase
@@ -21,7 +19,6 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet]
-        [EnableCors("MyPolicy")]
         public ActionResult<IEnumerable<User>> Get([FromQuery]UserParameters parameters) =>
           _userService.Get(parameters).ToList();
 
