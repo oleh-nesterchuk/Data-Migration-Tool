@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { User } from '../interfaces/user';
 import { environment } from 'src/environments/environment';
-
-import { DataService } from './data.service';
-import { Email } from '../interfaces/email';
 import { Observable } from 'rxjs';
+
+import { User } from '../interfaces/user';
+import { Email } from '../interfaces/email';
+import { DataService } from './data.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
-  users: User[];
+export class RequestService {
 
   constructor(private http: HttpClient, private dataService: DataService) { }
 
@@ -28,12 +27,8 @@ export class UserService {
     return this.http.put<User>(environment.connection + parameters, user)
   }
 
-  deleteUser(parameters: string, destination: string, index: number) {
-    this.http
-      .delete<User>(environment.connection + parameters)
-      .subscribe(() => {
-        this.dataService[destination].splice(index, 1);
-      });
+  deleteUser(parameters: string): Observable<any> {
+    return this.http.delete(environment.connection + parameters);
   }
 
   transferUser(parameters: string): Observable<User> {
@@ -52,12 +47,8 @@ export class UserService {
     return this.http.put<Email>(environment.connection + parameters, email);
   }
 
-  deleteEmail(parameters: string, index: number) {
-    this.http
-      .delete<Email>(environment.connection + parameters)
-      .subscribe(() => {
-        this.dataService.emails.splice(index, 1);
-      });
+  deleteEmail(parameters: string): Observable<any> {
+    return this.http.delete(environment.connection + parameters);
   }
 
   getErrorMessage(error: HttpErrorResponse): string {

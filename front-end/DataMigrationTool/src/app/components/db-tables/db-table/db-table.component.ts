@@ -4,7 +4,7 @@ import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { UserService } from 'src/app/services/user.service';
+import { RequestService } from 'src/app/services/request.service';
 import { DataService } from 'src/app/services/data.service';
 import { EmailsModalComponent } from 'src/app/components/modals/emails-modal/emails-modal.component';
 import { EditUserModalComponent } from 'src/app/components/modals/edit-user-modal/edit-user-modal.component';
@@ -29,7 +29,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
   errorMessage: string;
   subs = new Subscription();
 
-  constructor(private httpService: UserService, protected dataService: DataService,
+  constructor(private httpService: RequestService, protected dataService: DataService,
               private modalService: NgbModal, private dragulaService: DragulaService) {
     const group = this.dragulaService.find('COPYABLE');
     if (group === undefined) {
@@ -85,7 +85,9 @@ export class DbTableComponent implements OnInit, OnDestroy {
   deleteUser(index: number) {
     const query = this.userString + '/' + this.dataService[this.tableName][index].id;
 
-    this.httpService.deleteUser(query, this.tableName, index);
+    this.httpService.deleteUser(query).subscribe(() => {
+      this.dataService[this.tableName].splice(index, 1);
+    });
   }
 
   transfer(index: number) {
