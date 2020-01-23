@@ -30,10 +30,8 @@ namespace DataMigrationApi.DAL
         public IMongoDbUserRepository MongoDbRepository => _mongoDbRepository ??=
             new MongoDbRepository(_mongoSettings);
 
-        public void Save()
-        {
+        public void Save() => 
             _userContext.SaveChanges();
-        }
 
         #region Dispose Logic
 
