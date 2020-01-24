@@ -19,6 +19,11 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet]
+        [Route("GetSize")]
+        public ActionResult<int> GetSize() =>
+            _userService.GetSize();
+
+        [HttpGet]
         public ActionResult<IEnumerable<User>> Get([FromQuery]UserParameters parameters) =>
               _userService.Get(parameters).ToList();
 

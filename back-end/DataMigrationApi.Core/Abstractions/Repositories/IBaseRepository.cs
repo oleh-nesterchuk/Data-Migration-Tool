@@ -6,6 +6,7 @@ namespace DataMigrationApi.Core.Abstractions.Repositories
 {
     public interface IBaseRepository<TEntity, T, TParams> where TEntity : class, IEntity<T>
     {
+        int GetSize();
         TEntity GetById(T id);
         IEnumerable<TEntity> GetAll(TParams parameters);
         TEntity Insert(TEntity entity);

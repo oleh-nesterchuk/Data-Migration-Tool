@@ -15,6 +15,12 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
+        public int GetSize() =>
+            _unitOfWork.MongoDbRepository.GetEmailSize();
+
+        public int GetSize(string id) =>
+            _unitOfWork.MongoDbRepository.GetEmailSize(id);
+
         public IEnumerable<Email> Get(EmailParameters parameters) =>
             _unitOfWork.MongoDbRepository.GetEmails(parameters);
 

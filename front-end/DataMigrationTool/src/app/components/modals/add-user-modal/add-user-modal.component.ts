@@ -53,6 +53,7 @@ export class AddUserModalComponent implements OnInit {
         this.isLoading = false;
         this.wasAdded = true;
         this.newUserForm.reset();
+        this.setUsersSize();
       }, error => {
         this.isLoading = false;
         this.errorMessage = this.httpService.getErrorMessage(error);
@@ -69,5 +70,11 @@ export class AddUserModalComponent implements OnInit {
 
   deleteEmail(index: number) {
     (this.newUserForm.get('emails') as FormArray).removeAt(index);
+  }
+
+  private setUsersSize() {
+    this.httpService.getUsersSize(this.destination).subscribe(size => {
+      this.dataService[this.table + 'Size'] = size;
+    });
   }
 }

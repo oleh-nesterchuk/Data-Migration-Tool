@@ -14,6 +14,12 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
+        public int GetSize() =>
+            _unitOfWork.SqlServerEmailRepository.GetSize();
+
+        public int GetSize(string id) =>
+            _unitOfWork.SqlServerEmailRepository.GetSize(id);
+
         public IEnumerable<Email> Get(EmailParameters parameters) =>
             _unitOfWork.SqlServerEmailRepository.GetAll(parameters);
 

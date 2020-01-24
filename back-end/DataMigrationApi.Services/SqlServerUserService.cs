@@ -16,6 +16,9 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
+        public int GetSize() =>
+            _unitOfWork.SqlServerUserRepository.GetSize();
+
         public IEnumerable<User> Get(UserParameters parameters)
         {
             var users = _unitOfWork.SqlServerUserRepository.GetAll(parameters);

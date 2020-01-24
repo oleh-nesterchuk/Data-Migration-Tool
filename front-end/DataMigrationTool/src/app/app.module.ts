@@ -14,6 +14,7 @@ import { AddUserModalComponent } from './components/modals/add-user-modal/add-us
 import { EditUserModalComponent } from './components/modals/edit-user-modal/edit-user-modal.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
+
 const appRoutes = [
   { path: '', redirectTo: 'tables', pathMatch: 'full' },
   { path: 'tables', component: DbTablesComponent },
@@ -28,7 +29,7 @@ const appRoutes = [
     AddUserModalComponent,
     EditUserModalComponent,
     DbTablesComponent,
-    PageNotFoundComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

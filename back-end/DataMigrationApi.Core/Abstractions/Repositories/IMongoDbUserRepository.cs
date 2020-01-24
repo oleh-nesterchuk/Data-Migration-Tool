@@ -6,6 +6,8 @@ namespace DataMigrationApi.Core.Abstractions.Repositories
 {
     public interface IMongoDbUserRepository : IBaseRepository<User, string, UserParameters>
     {
+        int GetEmailSize();
+        int GetEmailSize(string id);
         IEnumerable<User> GetAllWithoutProjection(UserParameters parameters);
         IEnumerable<Email> GetEmails(EmailParameters parameters);
         IEnumerable<Email> GetAllUserEmails(string id);

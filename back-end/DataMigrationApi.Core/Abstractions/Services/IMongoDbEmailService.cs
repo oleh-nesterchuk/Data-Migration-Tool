@@ -6,6 +6,7 @@ namespace DataMigrationApi.Core.Abstractions.Services
 {
     public interface IMongoDbEmailService
     {
+        int GetSize(string id);
         IEnumerable<Email> GetAllUserEmails(string id);
         IEnumerable<Email> GetAllUserEmails(string id, EmailParameters parameters);
         IEnumerable<Email> Get(EmailParameters parameters);

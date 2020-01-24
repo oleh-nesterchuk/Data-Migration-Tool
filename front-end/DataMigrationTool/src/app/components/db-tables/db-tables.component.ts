@@ -30,5 +30,4 @@ export class DbTablesComponent implements OnInit {
     this.data.deleteMode = !this.data.deleteMode;
     this.data.editMode = false;
   }
-
 }

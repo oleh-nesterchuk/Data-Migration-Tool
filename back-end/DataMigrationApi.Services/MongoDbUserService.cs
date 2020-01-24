@@ -15,6 +15,9 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
+        public int GetSize() =>
+            _unitOfWork.MongoDbRepository.GetSize();
+
         public IEnumerable<User> Get(UserParameters parameters) =>
             _unitOfWork.MongoDbRepository.GetAll(parameters);
 

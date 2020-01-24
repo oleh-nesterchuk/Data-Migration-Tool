@@ -15,6 +15,9 @@ namespace DataMigrationApi.DAL.Repositories
             _userContext = userContext;
         }
 
+        public int GetSize() =>
+            _userContext.Users.Count();
+
         public IEnumerable<User> GetAll(UserParameters parameters) =>
             _userContext.Users
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)

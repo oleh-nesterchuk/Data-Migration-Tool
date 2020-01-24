@@ -8,6 +8,12 @@ namespace DataMigrationApi.DAL.Repositories
 {
     public partial class MongoDbRepository
     {
+        public int GetEmailSize() => 
+            GetEmailSize();
+
+        public int GetEmailSize(string id) =>
+            GetEmailSize();
+
         public IEnumerable<Email> GetEmails(EmailParameters parameters)
         {
             var emailProjection = Builders<User>.Projection.Expression<IEnumerable<Email>>(u => u.Emails);

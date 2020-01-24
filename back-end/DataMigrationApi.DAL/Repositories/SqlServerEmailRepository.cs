@@ -16,6 +16,12 @@ namespace DataMigrationApi.DAL.Repositories
             _userContext = userContext;
         }
 
+        public int GetSize() =>
+            _userContext.Emails.Count();
+
+        public int GetSize(string id) =>
+            _userContext.Emails.Where(e => e.UserID == id).Count();
+
         public IEnumerable<Email> GetAll(EmailParameters parameters) =>
             _userContext.Emails
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)

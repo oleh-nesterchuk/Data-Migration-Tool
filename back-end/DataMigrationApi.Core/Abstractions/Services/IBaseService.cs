@@ -5,6 +5,7 @@ namespace DataMigrationApi.Core.Abstractions.Services
 {
     public interface IBaseService<TEntity, T, TParams> where TEntity : class
     {
+        int GetSize();
         IEnumerable<TEntity> Get(TParams parameters);
         TEntity Get(T id);
         TEntity Insert(TEntity entity);

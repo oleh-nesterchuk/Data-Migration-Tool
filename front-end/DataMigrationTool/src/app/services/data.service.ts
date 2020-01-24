@@ -8,7 +8,9 @@ import { Email } from '../interfaces/email';
 })
 export class DataService {
   sqlUsers: User[];
+  sqlUsersSize: number;
   mongoUsers: User[];
+  mongoUsersSize: number;
   emails: Email[];
   deleteMode: boolean;
   editMode: boolean;

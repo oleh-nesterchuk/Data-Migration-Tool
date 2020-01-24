@@ -48,8 +48,11 @@ namespace DataMigrationApi.DAL.Repositories
             _ageProjection = Builders<User>.Projection.Expression(u => u.CalculateAge());
         }
 
+        public int GetSize() =>
+            (int)_users.CountDocuments(FilterDefinition<User>.Empty);
+
         public IEnumerable<User> GetAll(UserParameters parameters) =>
-            _users.Find(FilterDefinition<User>.Empty)
+            _users.Find(FilterDefinition< User>.Empty)
                 .Project(_emailProjection)
                 .Project(_ageProjection)
                 .ToEnumerable()
