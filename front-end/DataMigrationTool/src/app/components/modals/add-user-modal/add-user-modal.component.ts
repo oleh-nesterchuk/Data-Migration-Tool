@@ -4,11 +4,7 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 
 import { DataService } from 'src/app/services/data.service';
 import { RequestService } from 'src/app/services/request.service';
-<<<<<<< HEAD
-import { birthDateValidator } from 'src/app/validators/birthdate.validators';
-=======
 import { PaginationService } from 'src/app/services/pagination.service';
->>>>>>> dev/paging
 
 
 @Component({
@@ -27,11 +23,7 @@ export class AddUserModalComponent implements OnInit, OnDestroy {
   destinationSet = new Set<string>();
 
   constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
-<<<<<<< HEAD
-              private httpService: RequestService) { }
-=======
               private httpService: RequestService, private paginationService: PaginationService) { }
->>>>>>> dev/paging
 
   ngOnInit() {
     this.newUserForm = new FormGroup({

@@ -34,12 +34,8 @@ export class DbTableComponent implements OnInit, OnDestroy {
   pageSize = 5;
 
   constructor(private httpService: RequestService, protected dataService: DataService,
-<<<<<<< HEAD
-              private modalService: NgbModal, private dragulaService: DragulaService) {
-=======
               private modalService: NgbModal, private dragulaService: DragulaService,
               private paginationService: PaginationService) {
->>>>>>> dev/paging
     const group = this.dragulaService.find('COPYABLE');
     if (group === undefined) {
       this.dragulaService.createGroup('COPYABLE', {
@@ -116,11 +112,8 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
     this.httpService.deleteUser(query).subscribe(() => {
       this.dataService[this.tableName].splice(index, 1);
-<<<<<<< HEAD
-=======
       this.paginationService.setUserSize(this.userString, this.tableName);
       this.loadUsers();
->>>>>>> dev/paging
     });
   }
 

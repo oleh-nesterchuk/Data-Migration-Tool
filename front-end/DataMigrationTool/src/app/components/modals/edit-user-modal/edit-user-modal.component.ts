@@ -5,10 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataService } from 'src/app/services/data.service';
 import { RequestService } from 'src/app/services/request.service';
 import { User } from 'src/app/interfaces/user';
-<<<<<<< HEAD
-=======
 import { PaginationService } from 'src/app/services/pagination.service';
->>>>>>> dev/paging
 
 
 @Component({
@@ -28,11 +25,7 @@ export class EditUserModalComponent implements OnInit {
   @Input() apiAction: string;
 
   constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
-<<<<<<< HEAD
-              private httpService: RequestService) { }
-=======
               private httpService: RequestService, private paginationService: PaginationService) { }
->>>>>>> dev/paging
 
   ngOnInit() {
     this.user = this.dataService[this.table][this.userIndex];
