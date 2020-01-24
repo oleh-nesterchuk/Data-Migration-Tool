@@ -20,6 +20,7 @@ namespace DataMigrationApi.DAL.Repositories
 
         public IEnumerable<User> GetAll(UserParameters parameters) =>
             _userContext.Users
+                .OrderBy(u => u.LastName)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize);
 

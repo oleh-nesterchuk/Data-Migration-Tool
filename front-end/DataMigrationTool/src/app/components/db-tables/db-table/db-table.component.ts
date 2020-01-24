@@ -63,6 +63,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
         });
       })
     );
+    this.pageChange(1);
     this.getUsersSize();
     this.loadUsers();
   }
@@ -73,18 +74,20 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
   pageChange(newPage: number) {
     this.page = newPage;
+    this.paginationService[this.userString + 'PageNumber'] = newPage;
     this.loadUsers();
   }
 
   getUsersSize() {
     this.httpService.getUsersSize(this.userString).subscribe(size => {
-      this.dataService[this.tableName + 'Size'] = size;
+      this.paginationService[this.tableName + 'Size'] = size;
     });
   }
 
   loadUsers() {
     this.isLoading = true;
     this.errorMessage = null;
+    this.paginationService[this.userString + 'PageSize'] = this.pageSize;
     this.httpService.fetchUsers(this.userString, this.page, this.pageSize).subscribe(data => {
       this.dataService[this.tableName] = data;
       this.isLoading = false;
@@ -101,6 +104,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.query = query;
     modalRef.componentInstance.userIndex = index;
     modalRef.componentInstance.table = this.tableName;
+    modalRef.componentInstance.apiAction = this.userString;
   }
 
   deleteUser(index: number) {

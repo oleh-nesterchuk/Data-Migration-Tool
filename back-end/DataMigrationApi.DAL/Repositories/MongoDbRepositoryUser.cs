@@ -53,6 +53,7 @@ namespace DataMigrationApi.DAL.Repositories
 
         public IEnumerable<User> GetAll(UserParameters parameters) =>
             _users.Find(FilterDefinition< User>.Empty)
+                .SortBy(u => u.LastName)
                 .Project(_emailProjection)
                 .Project(_ageProjection)
                 .ToEnumerable()

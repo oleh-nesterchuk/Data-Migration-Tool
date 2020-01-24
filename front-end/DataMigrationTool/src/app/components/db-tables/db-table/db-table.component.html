@@ -33,7 +33,7 @@
       </tbody>
     </table>
     <div class="d-flex justify-content-between p-2">
-      <ngb-pagination [collectionSize]="dataService[tableName + 'Size']" [(page)]="page" [pageSize]="pageSize"
+      <ngb-pagination [collectionSize]="paginationService[tableName + 'Size']" [(page)]="page" [pageSize]="pageSize"
         (pageChange)="pageChange($event)">
       </ngb-pagination>
       <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (change)="loadUsers()">

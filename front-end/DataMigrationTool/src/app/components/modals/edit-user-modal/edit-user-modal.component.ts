@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DataService } from 'src/app/services/data.service';
 import { RequestService } from 'src/app/services/request.service';
 import { User } from 'src/app/interfaces/user';
+import { PaginationService } from 'src/app/services/pagination.service';
 
 
 @Component({
@@ -21,9 +22,10 @@ export class EditUserModalComponent implements OnInit {
   @Input() query: string;
   @Input() userIndex: number;
   @Input() table: string;
+  @Input() apiAction: string;
 
   constructor(public activeModal: NgbActiveModal, protected dataService: DataService,
-              private httpService: RequestService) { }
+              private httpService: RequestService, private paginationService: PaginationService) { }
 
   ngOnInit() {
     this.user = this.dataService[this.table][this.userIndex];
@@ -42,10 +44,21 @@ export class EditUserModalComponent implements OnInit {
     this.errorMessage = null;
     this.httpService.editUser(this.query, updatedUser).subscribe(data => {
       this.dataService[this.table][this.userIndex] = data;
+      this.fetchUsers();
       this.activeModal.close();
     }, error => {
       this.errorMessage = this.httpService.getErrorMessage(error);
     });
+  }
+
+  private fetchUsers() {
+    this.httpService.fetchUsers(this.apiAction, this.paginationService[this.apiAction + 'PageNumber'], 
+    this.paginationService[this.apiAction + 'PageSize'])
+    .subscribe(data => {
+      this.dataService[this.table] = data;
+  }, error => {
+    alert(this.httpService.getErrorMessage(error));
+  });
   }
 
   private convertDateToString(date: Date): string {
