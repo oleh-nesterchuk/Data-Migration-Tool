@@ -1,40 +1,53 @@
 <h3>{{tableHeader}}</h3>
-<div class="table-responsive-md mb-3">
-  <table class="table table-hover">
-    <thead class="thead-light">
-      <tr>
-        <th *ngIf="dataService.deleteMode">Del</th>
-        <th *ngIf="dataService.editMode">Edit</th>
-        <th *ngFor="let col of columns" scope="col">
-          {{col}}
-        </th>
-      </tr>
-    </thead>
-    <tbody #tbody dragula="COPYABLE">
-      <tr *ngFor="let user of dataService[tableName]; let i = index">
-        <th *ngIf="dataService.deleteMode">
-          <img src="../../../assets/delete.png" alt="delete" (click)="deleteUser(i)">
-        </th>
-        <th *ngIf="dataService.editMode">
-          <img src="../../../assets/edit.png" alt="edit" (click)="editUser(i)">
-        </th>
-        <th scope="row"><abbr [title]="user.id">{{user.id | slice:0:4}}</abbr></th>
-        <td>{{user.firstName | titlecase}}</td>
-        <td>{{user.lastName | titlecase}}</td>
-        <td>{{user.birthDate | date}}</td>
-        <td>{{user.age}}</td>
-        <td><a (click)="loadEmails(i)">Show</a></td>
-        <td>
-          <button class="btn btn-primary" (click)="transfer(i)">Transfer</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<div *ngIf="isLoading" class="spinner-border" role="status">
-  <span class="sr-only">Loading...</span>
-</div>
-<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-  <p class="mb-2">{{errorMessage}}</p>
-  <div><button class="btn btn-danger" (click)="errorMessage = null">Close</button></div>
-</div>
+<div *ngIf="dataService[tableName]">
+  <div class="table-responsive-md mb-3">
+    <table class="table table-hover">
+
+      <thead class="thead-light">
+        <tr>
+          <th *ngIf="dataService.deleteMode">Del</th>
+          <th *ngIf="dataService.editMode">Edit</th>
+          <th *ngFor="let col of columns" scope="col">
+            {{col}}
+          </th>
+        </tr>
+      </thead>
+      <tbody #tbody dragula="COPYABLE">
+        <tr *ngFor="let user of users; let i = index">
+          <th *ngIf="dataService.deleteMode">
+            <img src="../../../assets/delete.png" alt="delete" (click)="deleteUser(i)">
+          </th>
+          <th *ngIf="dataService.editMode">
+            <img src="../../../assets/edit.png" alt="edit" (click)="editUser(i)">
+          </th>
+          <th scope="row"><abbr [title]="user.id">{{user.id | slice:0:4}}</abbr></th>
+          <td>{{user.firstName | titlecase}}</td>
+          <td>{{user.lastName | titlecase}}</td>
+          <td>{{user.birthDate | date}}</td>
+          <td>{{user.age}}</td>
+          <td><a (click)="loadEmails(i)">Show</a></td>
+          <td>
+            <button class="btn btn-primary" (click)="transfer(i)">Transfer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="paginationService[tableName + 'Size']" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="pageChange($event)">
+      </ngb-pagination>
+      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (change)="loadUsers()">
+        <option [ngValue]="5">5 items per page</option>
+        <option [ngValue]="10">10 items per page</option>
+        <option [ngValue]="20">20 items per page</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    <p class="mb-2">{{errorMessage}}</p>
+    <div><button class="btn btn-danger" (click)="errorMessage = null">Close</button></div>
+  </div>

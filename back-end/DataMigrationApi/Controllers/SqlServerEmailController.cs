@@ -1,5 +1,6 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Email>> GetAllUserEmails(string id)
+        public ActionResult<IEnumerable<Email>> GetAllUserEmails(string id, [FromQuery]EmailParameters parameters)
         {
-            var emails = _emailService.GetAllUserEmails(id);
+            var emails = _emailService.GetAllUserEmails(id, parameters);
             if (emails == null)
             {
                 return NotFound();

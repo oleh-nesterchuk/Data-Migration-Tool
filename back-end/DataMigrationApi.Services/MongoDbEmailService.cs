@@ -1,6 +1,7 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using System.Collections.Generic;
 
 namespace DataMigrationApi.Services
@@ -14,11 +15,20 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<Email> Get() =>
-            _unitOfWork.MongoDbRepository.GetEmails();
+        public int GetSize() =>
+            _unitOfWork.MongoDbRepository.GetEmailSize();
+
+        public int GetSize(string id) =>
+            _unitOfWork.MongoDbRepository.GetEmailSize(id);
+
+        public IEnumerable<Email> Get(EmailParameters parameters) =>
+            _unitOfWork.MongoDbRepository.GetEmails(parameters);
 
         public IEnumerable<Email> GetAllUserEmails(string id) =>
             _unitOfWork.MongoDbRepository.GetAllUserEmails(id);
+
+        public IEnumerable<Email> GetAllUserEmails(string id, EmailParameters parameters) =>
+            _unitOfWork.MongoDbRepository.GetAllUserEmails(id, parameters);
 
         public Email Get(int id) =>
             _unitOfWork.MongoDbRepository.GetEmailById(id);

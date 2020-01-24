@@ -2,12 +2,13 @@ import { Component, OnInit, Input, OnDestroy, ViewChild, ElementRef } from '@ang
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { RequestService } from 'src/app/services/request.service';
 import { DataService } from 'src/app/services/data.service';
 import { EmailsModalComponent } from 'src/app/components/modals/emails-modal/emails-modal.component';
 import { EditUserModalComponent } from 'src/app/components/modals/edit-user-modal/edit-user-modal.component';
+import { User } from 'src/app/interfaces/user';
+import { PaginationService } from 'src/app/services/pagination.service';
 
 
 @Component({
@@ -21,16 +22,24 @@ export class DbTableComponent implements OnInit, OnDestroy {
   @Input() transferString: string;
   @Input() emailString: string;
   @Input() userString: string;
+  @Input() neighbourString: string;
   @Input() neighbourTable: string;
   @Input() tableName: string;
   @Input() tableHeader: string;
   @ViewChild('tbody', {static: false}) tbody: ElementRef;
   isLoading: boolean;
   errorMessage: string;
-  subs = new Subscription();
+  dragula$ = new Subscription();
+  page = 1;
+  pageSize = 5;
 
   constructor(private httpService: RequestService, protected dataService: DataService,
+<<<<<<< HEAD
               private modalService: NgbModal, private dragulaService: DragulaService) {
+=======
+              private modalService: NgbModal, private dragulaService: DragulaService,
+              private paginationService: PaginationService) {
+>>>>>>> dev/paging
     const group = this.dragulaService.find('COPYABLE');
     if (group === undefined) {
       this.dragulaService.createGroup('COPYABLE', {
@@ -43,7 +52,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subs.add(this.dragulaService.drop('COPYABLE')
+    this.dragula$.add(this.dragulaService.drop('COPYABLE')
       .subscribe(({ el, target }) => {
         if (target === null || target === this.tbody.nativeElement) {
           this.clearDragulasTable();
@@ -58,13 +67,32 @@ export class DbTableComponent implements OnInit, OnDestroy {
         });
       })
     );
+    this.pageChange(1);
+    this.getUsersSize();
     this.loadUsers();
+  }
+
+  get users(): User[] {
+    return this.dataService[this.tableName];
+  }
+
+  pageChange(newPage: number) {
+    this.page = newPage;
+    this.paginationService[this.userString + 'PageNumber'] = newPage;
+    this.loadUsers();
+  }
+
+  getUsersSize() {
+    this.httpService.getUsersSize(this.userString).subscribe(size => {
+      this.paginationService[this.tableName + 'Size'] = size;
+    });
   }
 
   loadUsers() {
     this.isLoading = true;
     this.errorMessage = null;
-    this.httpService.fetchUsers(this.userString).subscribe(data => {
+    this.paginationService[this.userString + 'PageSize'] = this.pageSize;
+    this.httpService.fetchUsers(this.userString, this.page, this.pageSize).subscribe(data => {
       this.dataService[this.tableName] = data;
       this.isLoading = false;
     }, error => {
@@ -80,6 +108,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.query = query;
     modalRef.componentInstance.userIndex = index;
     modalRef.componentInstance.table = this.tableName;
+    modalRef.componentInstance.apiAction = this.userString;
   }
 
   deleteUser(index: number) {
@@ -87,6 +116,11 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
     this.httpService.deleteUser(query).subscribe(() => {
       this.dataService[this.tableName].splice(index, 1);
+<<<<<<< HEAD
+=======
+      this.paginationService.setUserSize(this.userString, this.tableName);
+      this.loadUsers();
+>>>>>>> dev/paging
     });
   }
 
@@ -95,6 +129,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
     this.httpService.transferUser(query).subscribe(data => {
       this.dataService[this.neighbourTable].push(data);
+      this.paginationService.setUserSize(this.neighbourString, this.neighbourTable);
     }, error => {
       this.errorMessage = this.httpService.getErrorMessage(error);
     });
@@ -108,7 +143,7 @@ export class DbTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.unsubscribe();
+    this.dragula$.unsubscribe();
   }
 
   private clearDragulasTable() {

@@ -1,6 +1,7 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
 using System;
 using System.Collections.Generic;
 
@@ -15,9 +16,12 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<User> Get()
+        public int GetSize() =>
+            _unitOfWork.SqlServerUserRepository.GetSize();
+
+        public IEnumerable<User> Get(UserParameters parameters)
         {
-            var users = _unitOfWork.SqlServerUserRepository.GetAll();
+            var users = _unitOfWork.SqlServerUserRepository.GetAll(parameters);
             return users;
         }
 

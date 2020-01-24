@@ -13,14 +13,19 @@ import { DataService } from './data.service';
 })
 export class RequestService {
 
-  constructor(private http: HttpClient, private dataService: DataService) { }
+  constructor(private http: HttpClient) { }
+
+  getUsersSize(parameters: string): Observable<number> {
+    return this.http.get<number>(environment.connection + parameters + '/GetSize');
+  }
 
   addUser(parameters: string, user: User): Observable<User> {
     return this.http.post<User>(environment.connection + parameters, user);
   }
 
-  fetchUsers(parameters: string): Observable<User[]> {
-    return this.http.get<User[]>(environment.connection + parameters);
+  fetchUsers(parameters: string, pageNumber: number, pageSize: number): Observable<User[]> {
+    const query = parameters + '?' + 'PageNumber=' + pageNumber + '&PageSize=' + pageSize;
+    return this.http.get<User[]>(environment.connection + query);
   }
 
   editUser(parameters: string, user: User): Observable<User> {
