@@ -12,7 +12,7 @@ import { AddUserModalComponent } from '../modals/add-user-modal/add-user-modal.c
 })
 export class DbTablesComponent implements OnInit {
 
-  constructor(protected data: DataService, private modalService: NgbModal) {}
+  constructor(protected dataService: DataService, private modalService: NgbModal) {}
 
   ngOnInit() {
   }
@@ -22,12 +22,12 @@ export class DbTablesComponent implements OnInit {
   }
 
   editUser() {
-    this.data.editMode = !this.data.editMode;
-    this.data.deleteMode = false;
+    this.dataService.editMode = !this.dataService.editMode;
+    this.dataService.deleteMode = false;
   }
 
   deleteUser() {
-    this.data.deleteMode = !this.data.deleteMode;
-    this.data.editMode = false;
+    this.dataService.deleteMode = !this.dataService.deleteMode;
+    this.dataService.editMode = false;
   }
 }

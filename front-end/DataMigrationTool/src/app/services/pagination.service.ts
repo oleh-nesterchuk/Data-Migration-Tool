@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 
 import { RequestService } from './request.service';
 import { DataService } from './data.service';
@@ -9,18 +9,18 @@ import { DataService } from './data.service';
 })
 export class PaginationService {
 
-  SqlServerUserPageNumber: 1;
-  SqlServerUserPageSize: 5;
-  MongoDbUserPageNumber: 1;
-  MongoDbUserPageSize: 5;
-  sqlUsersSize: number;
-  mongoUsersSize: number;
+  SqlServerUserPageNumber = 1;
+  SqlServerUserPageSize = 5;
+  SqlServerUserSize: number;
+  MongoDbUserPageNumber = 1;
+  MongoDbUserPageSize = 5;
+  MongoDbUserSize: number;
   
-  constructor(private httpService: RequestService, private dataService: DataService) { }
+  constructor(private httpService: RequestService) { }
 
-  setUserSize(apiAction: string, tableName: string) {
+  setUserSize(apiAction: string) {
     this.httpService.getUsersSize(apiAction).subscribe(size => {
-      this.dataService[tableName + 'Size'] = size;
+      this[apiAction + 'Size'] = size;
     });
   }
 }

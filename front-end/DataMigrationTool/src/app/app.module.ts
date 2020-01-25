@@ -13,6 +13,7 @@ import { EmailsModalComponent } from './components/modals/emails-modal/emails-mo
 import { AddUserModalComponent } from './components/modals/add-user-modal/add-user-modal.component';
 import { EditUserModalComponent } from './components/modals/edit-user-modal/edit-user-modal.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ScrollToDirective } from './directives/scroll-to.directive';
 
 
 const appRoutes = [
@@ -29,7 +30,8 @@ const appRoutes = [
     AddUserModalComponent,
     EditUserModalComponent,
     DbTablesComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ScrollToDirective
   ],
   imports: [
     BrowserModule,

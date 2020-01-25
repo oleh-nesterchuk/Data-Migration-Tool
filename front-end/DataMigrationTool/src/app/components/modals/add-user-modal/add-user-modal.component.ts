@@ -40,6 +40,7 @@ export class AddUserModalComponent implements OnInit, OnDestroy {
     this.errorMessage = null;
     this.newUserForm.markAllAsTouched();
     if (this.newUserForm.invalid) {
+      this.isLoading = false;
       return;
     }
     if (this.destination.includes('Mongo')) {
@@ -53,7 +54,7 @@ export class AddUserModalComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this.wasAdded = true;
         this.newUserForm.reset();
-        this.paginationService.setUserSize(this.destination, this.table);
+        this.paginationService.setUserSize(this.destination);
         this.destinationSet.add(this.destination);
       }, error => {
         this.isLoading = false;

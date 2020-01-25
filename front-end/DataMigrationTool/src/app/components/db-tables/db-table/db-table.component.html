@@ -33,10 +33,13 @@
       </tbody>
     </table>
     <div class="d-flex justify-content-between p-2">
-      <ngb-pagination [collectionSize]="paginationService[tableName + 'Size']" [(page)]="page" [pageSize]="pageSize"
+      <ngb-pagination [collectionSize]="paginationService[userString + 'Size']" 
+        [(page)]="paginationService[userString + 'PageNumber']" 
+        [pageSize]="paginationService[userString + 'PageSize']"
         (pageChange)="pageChange($event)">
       </ngb-pagination>
-      <select class="custom-select" style="width: auto" [(ngModel)]="pageSize" (change)="loadUsers()">
+      <select class="custom-select" style="width: auto" 
+        [(ngModel)]="paginationService[userString + 'PageSize']" (change)="loadUsers()">
         <option [ngValue]="5">5 items per page</option>
         <option [ngValue]="10">10 items per page</option>
         <option [ngValue]="20">20 items per page</option>
@@ -45,10 +48,14 @@
   </div>
 </div>
 
-  <div *ngIf="isLoading" class="spinner-border" role="status">
-    <span class="sr-only">Loading...</span>
-  </div>
-  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-    <p class="mb-2">{{errorMessage}}</p>
-    <div><button class="btn btn-danger" (click)="errorMessage = null">Close</button></div>
-  </div>
+<div *ngIf="isLoading" class="spinner-border" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+<div *ngIf="wasTransferred" #errorElement class="alert alert-success" role="alert" scrollTo>
+  <p class="mb-2">The user has been successfully transferred!</p>
+  <div><button class="btn btn-success" (click)="wasTransferred = false">Close</button></div>
+</div>
+<div *ngIf="errorMessage" #errorElement class="alert alert-danger" role="alert" scrollTo>
+  <p class="mb-2">{{errorMessage}}</p>
+  <div><button class="btn btn-danger" (click)="errorMessage = null">Close</button></div>
+</div>

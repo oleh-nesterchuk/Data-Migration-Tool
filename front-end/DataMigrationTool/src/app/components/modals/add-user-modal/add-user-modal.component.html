@@ -31,7 +31,7 @@
         placeholder="First Name" formControlName="firstName">
       <span
         *ngIf="!newUserForm.get('firstName').valid && newUserForm.get('firstName').touched"
-        class="text-danger">Please provide a valid first name</span>
+        class="text-danger" scrollTo>Please provide a valid first name</span>
     </div>
 
     <div class="form-group mb-3">
@@ -41,7 +41,7 @@
         formControlName="lastName">
         <span
         *ngIf="!newUserForm.get('lastName').valid && newUserForm.get('lastName').touched"
-        class="text-danger">Please provide a valid last name</span>
+        class="text-danger" scrollTo>Please provide a valid last name</span>
     </div>
 
     <div class="form-group mb-3">
@@ -49,7 +49,7 @@
       <input type="date" class="form-control" id="dateAdd" formControlName="birthDate">
       <span
         *ngIf="!newUserForm.get('birthDate').valid && newUserForm.get('birthDate').touched"
-        class="text-danger">Please provide a valid date</span>
+        class="text-danger" scrollTo>Please provide a valid date</span>
     </div>
     <hr>
     <div formArrayName="emails">
@@ -62,7 +62,7 @@
             <span
               *ngIf="!newUserForm.get('emails')['controls'][i].get('value').valid &&
               newUserForm.get('emails')['controls'][i].get('value').touched"
-              class="text-danger">Please provide a valid email</span>
+              class="text-danger" scrollTo>Please provide a valid email</span>
           </div>
           <div class="form-check mb-3">
             <input type="checkbox" class="form-check-input" [id]="'isConfirmed' + i"
@@ -76,11 +76,11 @@
       <button class="btn btn-secondary" type="button" (click)="onAddEmail()">Add email</button>
     </div>
   </form>
-  <div *ngIf="wasAdded" class="alert alert-success mt-3" role="alert">
+  <div *ngIf="wasAdded" class="alert alert-success mt-3" role="alert" scrollTo>
     New user has been successfully added!
-    <div><button class="btn btn-danger" (click)="wasAdded = false">Close</button></div>
+    <div><button class="btn btn-success" (click)="wasAdded = false">Close</button></div>
   </div>
-  <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert" scrollTo>
     {{errorMessage}}
     <div><button class="btn btn-danger mt-3" (click)="errorMessage = null">Close</button></div>
   </div>

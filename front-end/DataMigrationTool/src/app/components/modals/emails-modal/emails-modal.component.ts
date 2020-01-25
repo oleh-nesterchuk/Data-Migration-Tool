@@ -52,8 +52,8 @@ export class EmailsModalComponent implements OnInit, OnDestroy {
     this.httpService
       .addEmail(query, this.emailForm.value as Email)
       .subscribe(data => {
-        this.dataService.emails.push(data)
-        this.emailForm.reset();
+        this.dataService.emails.push(data);
+        this.emailForm.reset({isConfirmed: false});
       });
   }
 

@@ -33,6 +33,10 @@
     <span class="sr-only">Loading...</span>
   </div>
 
+  <div *ngIf="!dataService.emails.length">
+    <h6 class="ml-1">The user doesn't have any email!</h6>
+  </div>
+
   <div *ngIf="isAdding || (isEditing && editIndex != -1)" [formGroup]="emailForm">
     <div class="form-group mb-3">
       <label for="emailAddNew">Email:</label>

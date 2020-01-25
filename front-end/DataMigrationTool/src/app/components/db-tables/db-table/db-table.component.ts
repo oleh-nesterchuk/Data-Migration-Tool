@@ -27,11 +27,11 @@ export class DbTableComponent implements OnInit, OnDestroy {
   @Input() tableName: string;
   @Input() tableHeader: string;
   @ViewChild('tbody', {static: false}) tbody: ElementRef;
+  @ViewChild('errorElement', {static: false}) errorElement: ElementRef;
   isLoading: boolean;
+  wasTransferred: boolean;
   errorMessage: string;
   dragula$ = new Subscription();
-  page = 1;
-  pageSize = 5;
 
   constructor(private httpService: RequestService, protected dataService: DataService,
               private modalService: NgbModal, private dragulaService: DragulaService,
@@ -54,17 +54,24 @@ export class DbTableComponent implements OnInit, OnDestroy {
           this.clearDragulasTable();
           return;
         }
+        this.wasTransferred = false;
+
         const query = this.transferString + '/' + el.firstElementChild
           .firstElementChild.getAttribute('title');
         this.httpService.transferUser(query).subscribe(data => {
-          this.dataService[this.neighbourTable].push(data);
+            this.loadUsers(this.neighbourString, this.neighbourTable);
+
+            this.wasTransferred = true;
           }, error => {
             this.errorMessage = this.httpService.getErrorMessage(error);
+            this.scrollToElement(this.errorElement);
+
+            this.wasTransferred = false;
         });
       })
     );
-    this.pageChange(1);
-    this.getUsersSize();
+
+    this.paginationService.setUserSize(this.userString);
     this.loadUsers();
   }
 
@@ -73,27 +80,26 @@ export class DbTableComponent implements OnInit, OnDestroy {
   }
 
   pageChange(newPage: number) {
-    this.page = newPage;
     this.paginationService[this.userString + 'PageNumber'] = newPage;
     this.loadUsers();
   }
 
-  getUsersSize() {
-    this.httpService.getUsersSize(this.userString).subscribe(size => {
-      this.paginationService[this.tableName + 'Size'] = size;
-    });
-  }
-
-  loadUsers() {
+  loadUsers(userString: string = this.userString, tableName: string = this.tableName) {
     this.isLoading = true;
     this.errorMessage = null;
-    this.paginationService[this.userString + 'PageSize'] = this.pageSize;
-    this.httpService.fetchUsers(this.userString, this.page, this.pageSize).subscribe(data => {
-      this.dataService[this.tableName] = data;
+
+    this.httpService.fetchUsers(userString, 
+      this.paginationService[userString + 'PageNumber'], 
+      this.paginationService[userString + 'PageSize']
+    ).subscribe(data => {
+      this.dataService[tableName] = data;
+
       this.isLoading = false;
     }, error => {
-      this.isLoading = false;
       this.errorMessage = this.httpService.getErrorMessage(error);
+      this.scrollToElement(this.errorElement);
+
+      this.isLoading = false;
     });
   }
 
@@ -112,24 +118,30 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
     this.httpService.deleteUser(query).subscribe(() => {
       this.dataService[this.tableName].splice(index, 1);
-      this.paginationService.setUserSize(this.userString, this.tableName);
+      this.paginationService.setUserSize(this.userString);
       this.loadUsers();
     });
   }
 
   transfer(index: number) {
     const query = this.transferString + '/' + this.dataService[this.tableName][index].id;
+    this.wasTransferred = false;
 
     this.httpService.transferUser(query).subscribe(data => {
-      this.dataService[this.neighbourTable].push(data);
-      this.paginationService.setUserSize(this.neighbourString, this.neighbourTable);
+      this.paginationService.setUserSize(this.neighbourString);
+
+      this.wasTransferred = true;
     }, error => {
       this.errorMessage = this.httpService.getErrorMessage(error);
+      this.scrollToElement(this.errorElement);
+
+      this.wasTransferred = false;
     });
   }
 
   loadEmails(index: number) {
     const modalRef = this.modalService.open(EmailsModalComponent);
+
     modalRef.componentInstance.emailString = this.emailString;
     modalRef.componentInstance.userIndex = index;
     modalRef.componentInstance.table = this.tableName;
@@ -137,6 +149,12 @@ export class DbTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.dragula$.unsubscribe();
+  }
+
+  private scrollToElement(elementRef: ElementRef) {
+    if (elementRef) {
+      elementRef.nativeElement.scrollIntoView();
+    }
   }
 
   private clearDragulasTable() {
