@@ -17,7 +17,8 @@
         </th>
       </tr>
     </thead>
-    <tr *ngFor="let email of dataService.emails; let i = index">
+    <tr *ngFor="let email of dataService.emails; let i = index" 
+        (dblclick)="isEditing = !isEditing;editEmail(i)">
       <th *ngIf="isDeleting" (click)="deleteEmail(i)">
         <img src="../../../../assets/delete.png" alt="delete">
       </th>
@@ -33,7 +34,7 @@
     <span class="sr-only">Loading...</span>
   </div>
 
-  <div *ngIf="!dataService.emails.length">
+  <div *ngIf="!(dataService.emails && dataService.emails.length)">
     <h6 class="ml-1">The user doesn't have any email!</h6>
   </div>
 

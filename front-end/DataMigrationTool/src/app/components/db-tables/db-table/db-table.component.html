@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody #tbody dragula="COPYABLE">
-        <tr *ngFor="let user of users; let i = index">
+        <tr *ngFor="let user of users; let i = index" (dblclick)="editUser(i)">
           <th *ngIf="dataService.deleteMode">
             <img src="../../../assets/delete.png" alt="delete" (click)="deleteUser(i)">
           </th>
