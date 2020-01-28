@@ -1,7 +1,4 @@
-import { Component } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { DataService } from '../../services/data.service';
+import { Component, OnInit } from '@angular/core';
 
 
 @Component({
@@ -9,8 +6,11 @@ import { DataService } from '../../services/data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'DataMigrationTool';
 
-  constructor(protected data: DataService) {}
+  constructor() {}
+
+  ngOnInit() {
+  }
 }

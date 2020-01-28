@@ -1,0 +1,72 @@
+<div class="modal-header">
+  <h4 class="modal-title">Emails</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <table class="table table-hover table-bordered">
+    
+    <thead class="thead-light">
+      <tr>
+        <th *ngIf="isDeleting">Del</th>
+        <th *ngIf="isEditing">Edit</th>
+        <th *ngFor="let col of columns" scope="col">
+          {{col}}
+        </th>
+      </tr>
+    </thead>
+    <tr *ngFor="let email of dataService.emails; let i = index" 
+        (dblclick)="isEditing = !isEditing;editEmail(i)">
+      <th *ngIf="isDeleting" (click)="deleteEmail(i)">
+        <img src="../../../../assets/delete.png" alt="delete">
+      </th>
+      <th *ngIf="isEditing" (click)="editEmail(i)">
+        <img src="../../../../assets/edit.png" alt="edit">
+      </th>
+      <th scope="row">{{email.id}}</th>
+      <td>{{email.value}}</td>
+      <td>{{email.isConfirmed}}</td>
+    </tr>
+  </table>
+  <div *ngIf="isLoading" class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+
+  <div *ngIf="!(dataService.emails && dataService.emails.length)">
+    <h6 class="ml-1">The user doesn't have any email!</h6>
+  </div>
+
+  <div *ngIf="isAdding || (isEditing && editIndex != -1)" [formGroup]="emailForm">
+    <div class="form-group mb-3">
+      <label for="emailAddNew">Email:</label>
+      <input type="text" class="form-control" id="emailAddNew" 
+        placeholder="Email" formControlName="value">
+      <span
+        *ngIf="!emailForm.get('value').valid &&
+        emailForm.get('value').touched"
+        class="text-danger">Please provide a valid email</span>
+    </div>
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" id="isConfirmedEmail"
+        formControlName="isConfirmed">
+      <label class="form-check-label" for="isConfirmedEmail">Confirmed</label>
+      <button *ngIf="isAdding; else edit" class="btn btn-secondary btn-sm ml-3" 
+        (click)="addEmail()">Add</button>
+      <ng-template #edit>
+        <button class="btn btn-secondary btn-sm ml-3" 
+          (click)="submitEditEmail()">Update</button>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary mr-3" (click)="toggleAddMode()">Add mode</button>
+  <button class="btn btn-danger mr-3" (click)="toggleDeleteMode()">Delete mode</button>
+  <button class="btn btn-warning mr-3" (click)="toggleEditMode()">Edit mode</button>
+  <button type="button" class="btn btn-outline-dark" 
+    (click)="activeModal.close('Close click')">Close
+  </button>
+</div>

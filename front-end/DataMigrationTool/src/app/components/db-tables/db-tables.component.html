@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-sm m-2" id="sql">
+        <app-db-table [tableHeader]="'SQL Server'" [tableName]="'sqlUsers'"
+          [transferString]="'SendToMongoDb'" [emailString]="'SqlServerEmail'"
+          [userString]="'SqlServerUser'" [neighbourTable]="'mongoUsers'"
+          [neighbourString]="'MongoDbUser'">
+        </app-db-table>
+        <h6 *ngIf="dataService.sqlUsers && !dataService.sqlUsers.length">SQL Server database is empty!</h6>
+      </div>
+      <div class="col-sm m-2" id="mongo">
+        <app-db-table [tableHeader]="'MongoDb'" [tableName]="'mongoUsers'"
+          [transferString]="'SendToSqlServer'" [emailString]="'MongoDbEmail'"
+          [userString]="'MongoDbUser'" [neighbourTable]="'sqlUsers'" 
+          [neighbourString]="'SqlServerUser'">
+        </app-db-table>
+        <h6 *ngIf="dataService.mongoUsers && !dataService.mongoUsers.length">Mongo databse is empty!</h6>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm ml-2 mb-2">
+        <button class="btn btn-primary mb-3 mr-3" (click)="addUser()">Add a new User</button>
+        <button class="btn btn-danger mb-3 mr-3" (click)="deleteUser()">Delete a User</button>
+        <button class="btn btn-warning mb-3 mr-3" (click)="editUser()">Edit a user</button>
+      </div>
+    </div>
+  </div>
+  

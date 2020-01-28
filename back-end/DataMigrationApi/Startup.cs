@@ -1,5 +1,6 @@
 using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
+using DataMigrationApi.Core.Entities;
 using DataMigrationApi.DAL;
 using DataMigrationApi.Services;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace DataMigrationApi
@@ -25,22 +27,27 @@ namespace DataMigrationApi
         {
             services.AddDbContext<UserContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("SQLServerDefaultConnection")));
+
+            services.Configure<MongoDBSettings>(Configuration.GetSection(nameof(MongoDBSettings)));
+
+            services.AddSingleton<IMongoDBSettings>(x =>
+                x.GetRequiredService<IOptions<MongoDBSettings>>().Value);
                         
             services.AddControllers();
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
-            services.AddTransient<ISqlServerEmailService, SqlServerEmailService>();
-            services.AddTransient<ISqlServerUserService, SqlServerUserService>();
-            services.AddTransient<IMongoDbEmailService, MongoDbEmailService>();
-            services.AddTransient<IMongoDbUserService, MongoDbUserService>();
+            services.AddCors();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ISqlServerEmailService, SqlServerEmailService>();
+            services.AddScoped<ISqlServerUserService, SqlServerUserService>();
+            services.AddScoped<IMongoDbEmailService, MongoDbEmailService>();
+            services.AddScoped<IMongoDbUserService, MongoDbUserService>();
             
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Data Migration tool", Version = "v1.0" });
                 c.CustomSchemaIds(x => x.FullName);
             });
-
-            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,8 +56,6 @@ namespace DataMigrationApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseCors(x => x.AllowAnyOrigin());
 
             app.UseSwagger();
 
@@ -63,6 +68,11 @@ namespace DataMigrationApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(x => x.SetIsOriginAllowed(o => true)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
 
             app.UseAuthorization();
 

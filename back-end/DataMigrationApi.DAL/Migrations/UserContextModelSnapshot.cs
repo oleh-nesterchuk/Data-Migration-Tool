@@ -58,8 +58,8 @@ namespace DataMigrationApi.DAL.Migrations
                         .HasColumnType("int")
                         .HasComputedColumnSql("DATEDIFF(yy, BirthDate, GETDATE()) - CASE WHEN(MONTH(BirthDate) > MONTH(GETDATE())) OR(MONTH(BirthDate) = MONTH(GETDATE()) AND DAY(BirthDate) > DAY(GETDATE())) THEN 1 ELSE 0 END");
 
-                    b.Property<DateTimeOffset>("BirthDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()

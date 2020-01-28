@@ -1,13 +1,12 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
-using Microsoft.AspNetCore.Cors;
+using DataMigrationApi.Core.Paging;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataMigrationApi.Controllers
 {
-    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MongoDbUserController : ControllerBase
@@ -20,8 +19,13 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<User>> Get() =>
-            _userService.Get().ToList();
+        [Route("GetSize")]
+        public ActionResult<int> GetSize() =>
+            _userService.GetSize();
+
+        [HttpGet]
+        public ActionResult<IEnumerable<User>> Get([FromQuery]UserParameters parameters) =>
+              _userService.Get(parameters).ToList();
 
         [HttpGet("{id}")]
         public ActionResult<User> Get(string id)

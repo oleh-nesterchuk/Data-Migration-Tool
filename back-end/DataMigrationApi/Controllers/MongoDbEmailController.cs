@@ -1,13 +1,12 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
-using Microsoft.AspNetCore.Cors;
+using DataMigrationApi.Core.Paging;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataMigrationApi.Controllers
 {
-    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MongoDbEmailController : ControllerBase
@@ -20,9 +19,10 @@ namespace DataMigrationApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Email>> GetAllUserEmails(string id)
+        public ActionResult<IEnumerable<Email>> GetAllUserEmails(string id,
+            [FromQuery]EmailParameters parameters)
         {
-            var emails = _emailService.GetAllUserEmails(id);
+            var emails = _emailService.GetAllUserEmails(id, parameters);
             if (emails == null)
             {
                 return NotFound();
@@ -30,6 +30,7 @@ namespace DataMigrationApi.Controllers
 
             return emails.ToList();
         }
+    
 
         [HttpGet("{id}")]
         public ActionResult<Email> Get(int id)

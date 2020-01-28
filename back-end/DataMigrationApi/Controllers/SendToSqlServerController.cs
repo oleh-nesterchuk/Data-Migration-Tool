@@ -1,11 +1,9 @@
 ﻿using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DataMigrationApi.Controllers
 {
-    [EnableCors("AllowAnyOrigin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SendToSqlServerController : ControllerBase
@@ -33,11 +31,11 @@ namespace DataMigrationApi.Controllers
             var user = _mongoService.Get(id);
             var emails = user.Emails;
             user.Emails = null;
-            user.Identity = 0;
 
             var inserted = _sqlUserService.Insert(user);
             foreach (var e in emails)
             {
+                e.UserID = inserted.ID;
                 _sqlEmailService.Insert(e);
             }
 

@@ -1,0 +1,46 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edit the user</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+  <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+  
+<div class="modal-body">
+  <form [formGroup]="editUserForm">
+    <div class="form-group mb-3">
+      <label for="firstNameEdit">First name:</label>
+      <input type="text" class="form-control" id="firstNameEdit" 
+        placeholder="First Name" formControlName="firstName">
+      <span *ngIf="!editUserForm.get('firstName').valid && editUserForm.get('firstName').touched"
+        class="text-danger">Please provide a valid first name
+      </span>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="lastNameEdit">Last name:</label>
+      <input type="text" class="form-control" id="lastNameEdit" 
+        placeholder="Last Name" aria-label="Last Name" formControlName="lastName">
+      <span *ngIf="!editUserForm.get('lastName').valid && editUserForm.get('lastName').touched"
+        class="text-danger">Please provide a valid last name
+      </span>
+    </div>
+
+    <div class="form-group mb-3">
+      <label for="dateEdit">Birthday:</label>
+      <input type="date" class="form-control" id="dateEdit" formControlName="birthDate">
+      <span *ngIf="!editUserForm.get('birthDate').valid && editUserForm.get('birthDate').touched"
+        class="text-danger">Please provide a valid date
+      </span>
+    </div>
+
+  </form>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-3" role="alert">
+    <p class="mb-3">{{errorMessage}}</p>
+    <div><button class="btn btn-danger mb-3" (click)="errorMessage = null">Close</button></div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="editUser()">Edit</button>
+</div>

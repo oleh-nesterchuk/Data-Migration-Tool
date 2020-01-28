@@ -1,6 +1,8 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Services;
 using DataMigrationApi.Core.Entities;
+using DataMigrationApi.Core.Paging;
+using System;
 using System.Collections.Generic;
 
 namespace DataMigrationApi.Services
@@ -14,9 +16,12 @@ namespace DataMigrationApi.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<User> Get()
+        public int GetSize() =>
+            _unitOfWork.SqlServerUserRepository.GetSize();
+
+        public IEnumerable<User> Get(UserParameters parameters)
         {
-            var users = _unitOfWork.SqlServerUserRepository.GetAll();
+            var users = _unitOfWork.SqlServerUserRepository.GetAll(parameters);
             return users;
         }
 
@@ -26,22 +31,41 @@ namespace DataMigrationApi.Services
             return user;
         }
 
-        public User Insert(User user)
+        public User Insert(User entity)
         {
-            _unitOfWork.SqlServerUserRepository.Insert(user);
+            if (!Guid.TryParse(entity.ID, out _) || Get(entity.ID) != null)
+            {
+                entity.ID = Guid.NewGuid().ToString();
+            }
+            entity.Identity = 0;
+
+            _unitOfWork.SqlServerUserRepository.Insert(entity);
             _unitOfWork.Save();
-            return user;
+            return entity;
         }
 
-        public User Update(User user)
+        public User Update(User entity)
         {
-            var userToUpdate = _unitOfWork.SqlServerUserRepository.Update(user);
+            var user = Get(entity.ID);
+            if (user == null)
+            {
+                return null;
+            }
+
+            entity.Identity = user.Identity;
+            var userToUpdate = _unitOfWork.SqlServerUserRepository.Update(entity);
+
             _unitOfWork.Save();
             return userToUpdate;
         }
 
         public void Delete(string id)
         {
+            var user = Get(id);
+            if (user == null)
+            {
+                return;
+            }
             _unitOfWork.SqlServerUserRepository.Delete(id);
             _unitOfWork.Save();
         }

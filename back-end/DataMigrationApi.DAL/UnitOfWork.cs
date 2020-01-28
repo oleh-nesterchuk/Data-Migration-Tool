@@ -1,5 +1,6 @@
 ﻿using DataMigrationApi.Core.Abstractions;
 using DataMigrationApi.Core.Abstractions.Repositories;
+using DataMigrationApi.Core.Entities;
 using DataMigrationApi.DAL.Repositories;
 using System;
 
@@ -11,13 +12,13 @@ namespace DataMigrationApi.DAL
         private ISqlServerUserRepository _sqlServerUserRepository;
         private IMongoDbUserRepository _mongoDbRepository;
         private UserContext _userContext;
-        private readonly string _mongoConnectionString;
+        private readonly IMongoDBSettings _mongoSettings;
         private bool _disposed = false;
 
-        public UnitOfWork(UserContext userContext, string mongoConnectionString = "mongodb://localhost:27017")
+        public UnitOfWork(UserContext userContext, IMongoDBSettings mongoSettings)
         {
             _userContext = userContext;
-            _mongoConnectionString = mongoConnectionString;
+            _mongoSettings = mongoSettings;
         }
 
         public ISqlServerEmailRepository SqlServerEmailRepository => _sqlServerEmailRepository ??=
@@ -27,12 +28,10 @@ namespace DataMigrationApi.DAL
             new SqlServerUserRepository(_userContext);
 
         public IMongoDbUserRepository MongoDbRepository => _mongoDbRepository ??=
-            new MongoDbUserRepository(_mongoConnectionString);
+            new MongoDbRepository(_mongoSettings);
 
-        public void Save()
-        {
+        public void Save() => 
             _userContext.SaveChanges();
-        }
 
         #region Dispose Logic
 
